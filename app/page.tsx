@@ -72,7 +72,7 @@ export default function Portfolio() {
           </motion.p>
 
           <motion.div variants={fadeIn} className="flex flex-wrap items-center justify-center gap-4">
-            <a href="/resume.pdf" download="Nigunthan_Prignaselvam_CV.pdf" className="flex items-center gap-2 px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-gray-950 font-semibold rounded-full transition-all hover:scale-105 active:scale-95">
+            <a href="/resume.pdf" download="resume.pdf.pdf" className="flex items-center gap-2 px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-gray-950 font-semibold rounded-full transition-all hover:scale-105 active:scale-95">
               <Download size={20} />
               Download CV
             </a>
@@ -326,9 +326,4 @@ const education =[
     school: "Cambridge College",
     date: "2014 - 2016"
   },
-  {
-    degree: "GCE Ordinary Level",
-    school: "Agarapatana Tamil Maha Vidyalayam",
-    date: "2013"
-  }
 ];

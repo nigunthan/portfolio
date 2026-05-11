@@ -129,12 +129,12 @@ export default function Portfolio() {
             
             <div className="overflow-hidden mb-2">
               <motion.h1 variants={wordVars} className="text-[14vw] md:text-[11vw] leading-[0.85] font-black uppercase tracking-tighter">
-                Digital
+                Social Media
               </motion.h1>
             </div>
             <div className="overflow-hidden mb-10">
               <motion.h1 variants={wordVars} className="text-[14vw] md:text-[11vw] leading-[0.85] font-black uppercase tracking-tighter">
-                Marketer
+                Manager 
               </motion.h1>
             </div>
             

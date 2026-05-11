@@ -1,8 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowUpRight, Mail, ExternalLink } from "lucide-react";
+import { ArrowUpRight, Mail, User, Sparkles, FileText, Shapes, Send, Moon } from "lucide-react";
 import Link from "next/link";
+import { useEffect } from "react";
 
 // Custom SVG Icons
 const GithubIcon = ({ size = 24 }: { size?: number }) => (
@@ -21,16 +22,21 @@ export default function Portfolio() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
   };
 
+  // Enforce smooth scrolling on the whole page
+  useEffect(() => {
+    document.documentElement.style.scrollBehavior = "smooth";
+  },[]);
+
   return (
     <div className="min-h-screen bg-[#050505] text-[#ededed] font-sans selection:bg-white selection:text-black relative">
       
-      {/* PREMIUM CSS NOISE BACKGROUND (Just like Dilshard's) */}
+      {/* PREMIUM CSS NOISE BACKGROUND */}
       <div 
         className="fixed inset-0 pointer-events-none z-0 opacity-[0.04]" 
         style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}
       ></div>
 
-      {/* MARQUEE ANIMATION */}
+      {/* MARQUEE ANIMATION CSS */}
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes marquee {
           0% { transform: translateX(0%); }
@@ -43,20 +49,53 @@ export default function Portfolio() {
         }
       `}} />
 
-      <div className="relative z-10">
-        {/* TOP NAVBAR */}
-        <header className="fixed top-0 w-full flex justify-between items-center p-6 md:px-12 z-50 bg-[#050505]/70 backdrop-blur-md border-b border-white/10 text-xs font-bold uppercase tracking-widest text-white">
-          <div className="text-sm">Nigunthan</div>
-          <div className="hidden md:block text-[#666]">Digital Marketer</div>
-          <nav className="flex gap-6">
-            <a href="#about" className="hover:text-[#aaa] transition-colors">About</a>
-            <a href="#work" className="hover:text-[#aaa] transition-colors">Work</a>
-            <a href="#cv" className="hover:text-[#aaa] transition-colors">CV</a>
-          </nav>
-        </header>
+      {/* FLOATING ICON DOCK (Replaces Top Navbar) */}
+      <div className="fixed bottom-6 md:bottom-10 left-0 w-full flex justify-center z-50 pointer-events-none">
+        <motion.nav 
+          initial={{ y: 100, opacity: 0 }} 
+          animate={{ y: 0, opacity: 1 }} 
+          transition={{ duration: 1, delay: 0.5, type: "spring", stiffness: 100 }}
+          className="flex items-center gap-4 md:gap-6 px-6 py-4 bg-[#0a0a0a]/90 backdrop-blur-xl border border-white/10 rounded-full shadow-2xl pointer-events-auto"
+        >
+          {/* ABOUT */}
+          <a href="#about" className="group relative text-[#888] hover:text-white transition-colors">
+            <motion.div whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.9 }}><User size={22} /></motion.div>
+            <span className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#222] text-white text-[10px] uppercase tracking-widest rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">About</span>
+          </a>
+          {/* SKILLS */}
+          <a href="#skills" className="group relative text-[#888] hover:text-white transition-colors">
+            <motion.div whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.9 }}><Sparkles size={22} /></motion.div>
+            <span className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#222] text-white text-[10px] uppercase tracking-widest rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Skills</span>
+          </a>
+          {/* CV */}
+          <a href="#cv" className="group relative text-[#888] hover:text-white transition-colors">
+            <motion.div whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.9 }}><FileText size={22} /></motion.div>
+            <span className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#222] text-white text-[10px] uppercase tracking-widest rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Resume</span>
+          </a>
+          {/* WORK */}
+          <a href="#work" className="group relative text-[#888] hover:text-white transition-colors">
+            <motion.div whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.9 }}><Shapes size={22} /></motion.div>
+            <span className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#222] text-white text-[10px] uppercase tracking-widest rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Work</span>
+          </a>
+          {/* CONTACT */}
+          <a href="#contact" className="group relative text-[#888] hover:text-white transition-colors">
+            <motion.div whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.9 }}><Send size={22} /></motion.div>
+            <span className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#222] text-white text-[10px] uppercase tracking-widest rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Contact</span>
+          </a>
+          
+          <div className="w-[1px] h-6 bg-white/20 mx-1 md:mx-2"></div>
+          
+          {/* THEME TOGGLE (Aesthetic only to match image) */}
+          <button className="group relative text-[#888] hover:text-white transition-colors">
+            <motion.div whileHover={{ scale: 1.2, rotate: -20 }} whileTap={{ scale: 0.9 }}><Moon size={22} /></motion.div>
+            <span className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#222] text-white text-[10px] uppercase tracking-widest rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none w-max">Dark Mode</span>
+          </button>
+        </motion.nav>
+      </div>
 
+      <div className="relative z-10">
         {/* HERO SECTION */}
-        <section className="min-h-screen flex flex-col justify-end p-6 md:p-12 pb-24 md:pb-32">
+        <section className="min-h-screen flex flex-col justify-end p-6 md:p-12 pb-32 md:pb-48">
           <motion.div initial="hidden" animate="visible" variants={fadeIn}>
             <p className="max-w-2xl text-xl md:text-2xl text-[#888] mb-8 leading-snug">
               Nigunthan Prignaselvam — digital marketer and sales professional based in Sri Lanka.
@@ -101,7 +140,7 @@ export default function Portfolio() {
             </p>
 
             {/* BRUTALIST STATS GRID */}
-            <div className="grid grid-cols-2 gap-4">
+            <div id="skills" className="grid grid-cols-2 gap-4">
               <div className="bg-[#111] p-6 md:p-8 rounded-[2rem] flex flex-col justify-between aspect-square">
                 <h4 className="text-5xl md:text-6xl font-black text-white mb-4">03+</h4>
                 <p className="text-xs uppercase tracking-widest text-[#666] font-bold">Years<br/>Experience</p>
@@ -205,7 +244,7 @@ export default function Portfolio() {
         </section>
 
         {/* FOOTER CONTACT AREA */}
-        <footer id="contact" className="p-6 md:p-12 border-t border-white/10 pt-24 pb-12">
+        <footer id="contact" className="p-6 md:p-12 border-t border-white/10 pt-24 pb-32 md:pb-48">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn} className="max-w-4xl mb-24">
             <h2 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter leading-[0.9] mb-8">
               Let's Connect

@@ -18,7 +18,8 @@ const FacebookIcon = ({ size = 24 }: { size?: number }) => (
 export default function Portfolio() {
   const fadeIn = {
     hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+    // Removed the ease property that caused the Vercel TypeScript error
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
   };
 
   return (

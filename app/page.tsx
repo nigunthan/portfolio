@@ -18,7 +18,7 @@ const FacebookIcon = ({ size = 24 }: { size?: number }) => (
 
 export default function Portfolio() {
   const[isDark, setIsDark] = useState(true);
-  const [mounted, setMounted] = useState(false);
+  const[mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -35,14 +35,14 @@ export default function Portfolio() {
   const tInvertText = isDark ? "text-black" : "text-white";
   const tGlass = isDark ? "bg-white/5" : "bg-black/5";
 
-  // Font Animation Variants
+  // Font Animation Variants (Removed strict mathematical curves to fix Vercel TS error)
   const containerVars = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
   };
   const wordVars = {
     hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease:[0.16, 1, 0.3, 1] } },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
   };
   const fadeIn = {
     hidden: { opacity: 0, y: 30 },
@@ -67,7 +67,7 @@ export default function Portfolio() {
 
       <div className="relative z-10">
         
-        {/* TEXT-BASED PILL NAVBAR (From your screenshot) */}
+        {/* TEXT-BASED PILL NAVBAR */}
         <div className="fixed top-6 w-full flex justify-center z-50 px-4 pointer-events-none">
           <nav className={`pointer-events-auto flex items-center gap-4 md:gap-8 px-6 md:px-10 py-4 ${tGlass} backdrop-blur-xl border ${tBorder} rounded-full shadow-2xl transition-colors duration-500`}>
             <a href="#about" className={`text-xs md:text-sm font-bold uppercase tracking-widest ${tMuted} hover:${tText} transition-colors`}>About</a>
@@ -152,7 +152,7 @@ export default function Portfolio() {
           </motion.div>
         </section>
 
-        {/* DEDICATED SKILLS & SERVICES SECTION (NEW) */}
+        {/* DEDICATED SKILLS & SERVICES SECTION */}
         <section id="skills" className={`p-6 md:p-12 border-t ${tBorder} pt-24 pb-24 transition-colors duration-500`}>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn}>
             <h2 className={`uppercase tracking-widest text-xs font-bold ${tMuted} mb-12 text-center`}>Services & Expertise</h2>

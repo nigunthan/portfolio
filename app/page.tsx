@@ -173,7 +173,7 @@ export default function Portfolio() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className={`${tCard} p-6 md:p-8 rounded-[2rem] flex flex-col justify-between aspect-square transition-colors duration-500`}>
-                <h4 className="text-5xl md:text-6xl font-black mb-4">03+</h4>
+                <h4 className="text-5xl md:text-6xl font-black mb-4">07+</h4>
                 <p className={`text-xs uppercase tracking-widest ${tMuted} font-bold`}>Years<br/>Experience</p>
               </div>
               <div className={`${tCard} p-6 md:p-8 rounded-[2rem] flex flex-col justify-between aspect-square transition-colors duration-500`}>

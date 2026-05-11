@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowUpRight, Mail, ExternalLink, Sun, Moon } from "lucide-react";
+import { ArrowUpRight, Mail, ExternalLink, Sun, Moon, User, Sparkles, FileText, Shapes, Send } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 
@@ -25,7 +25,7 @@ export default function Portfolio() {
     document.documentElement.style.scrollBehavior = "smooth";
   },[]);
 
-  // Theme Variables for seamless transition
+  // Theme Variables
   const tBg = isDark ? "bg-[#050505]" : "bg-[#f4f4f4]";
   const tText = isDark ? "text-[#ededed]" : "text-[#111111]";
   const tCard = isDark ? "bg-[#111111]" : "bg-white";
@@ -35,7 +35,7 @@ export default function Portfolio() {
   const tInvertText = isDark ? "text-black" : "text-white";
   const tGlass = isDark ? "bg-white/5" : "bg-black/5";
 
-  // Font Animation Variants (Removed strict mathematical curves to fix Vercel TS error)
+  // Font Animation Variants
   const containerVars = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
@@ -67,29 +67,61 @@ export default function Portfolio() {
 
       <div className="relative z-10">
         
-        {/* TEXT-BASED PILL NAVBAR */}
+        {/* 1. TOP NAVBAR (TEXT PILL) */}
         <div className="fixed top-6 w-full flex justify-center z-50 px-4 pointer-events-none">
-          <nav className={`pointer-events-auto flex items-center gap-4 md:gap-8 px-6 md:px-10 py-4 ${tGlass} backdrop-blur-xl border ${tBorder} rounded-full shadow-2xl transition-colors duration-500`}>
-            <a href="#about" className={`text-xs md:text-sm font-bold uppercase tracking-widest ${tMuted} hover:${tText} transition-colors`}>About</a>
-            <a href="#work" className={`text-xs md:text-sm font-bold uppercase tracking-widest ${tMuted} hover:${tText} transition-colors`}>Work</a>
-            <a href="#cv" className={`text-xs md:text-sm font-bold uppercase tracking-widest ${tMuted} hover:${tText} transition-colors`}>CV</a>
-            <a href="#skills" className={`hidden md:block text-xs md:text-sm font-bold uppercase tracking-widest ${tMuted} hover:${tText} transition-colors`}>Services</a>
-            <a href="#contact" className={`text-xs md:text-sm font-bold uppercase tracking-widest ${tMuted} hover:${tText} transition-colors`}>Contact</a>
-            
-            <div className={`w-[1px] h-4 ${isDark ? 'bg-white/20' : 'bg-black/20'} mx-2`}></div>
-            
-            {/* WORKING DARK/LIGHT MODE TOGGLE */}
-            <button 
-              onClick={() => setIsDark(!isDark)} 
-              className={`text-xs font-bold uppercase tracking-widest ${tMuted} hover:${tText} transition-transform active:scale-90 flex items-center`}
-            >
-              {isDark ? <Sun size={18} /> : <Moon size={18} />}
-            </button>
+          <nav className={`pointer-events-auto flex items-center gap-6 md:gap-10 px-8 md:px-12 py-4 md:py-5 ${tGlass} backdrop-blur-xl border ${tBorder} rounded-full shadow-2xl transition-colors duration-500`}>
+            <a href="#about" className={`text-[10px] md:text-xs font-black uppercase tracking-widest ${tMuted} hover:${tText} transition-colors`}>About</a>
+            <a href="#work" className={`text-[10px] md:text-xs font-black uppercase tracking-widest ${tMuted} hover:${tText} transition-colors`}>Work</a>
+            <a href="#cv" className={`text-[10px] md:text-xs font-black uppercase tracking-widest ${tMuted} hover:${tText} transition-colors`}>CV</a>
+            <a href="#skills" className={`hidden md:block text-[10px] md:text-xs font-black uppercase tracking-widest ${tMuted} hover:${tText} transition-colors`}>Services</a>
+            <a href="#contact" className={`text-[10px] md:text-xs font-black uppercase tracking-widest ${tMuted} hover:${tText} transition-colors`}>Contact</a>
           </nav>
         </div>
 
+        {/* 2. BOTTOM NAVBAR (ICON PILL + DARK MODE) */}
+        <div className="fixed bottom-6 md:bottom-10 left-0 w-full flex justify-center z-50 pointer-events-none">
+          <motion.nav 
+            initial={{ y: 100, opacity: 0 }} 
+            animate={{ y: 0, opacity: 1 }} 
+            transition={{ duration: 1, delay: 0.5, type: "spring", stiffness: 100 }}
+            className={`flex items-center gap-5 md:gap-8 px-8 py-4 ${tGlass} backdrop-blur-xl border ${tBorder} rounded-full shadow-2xl pointer-events-auto transition-colors duration-500`}
+          >
+            <a href="#about" className={`group relative ${tMuted} hover:${tText} transition-colors`}>
+              <motion.div whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.9 }}><User size={22} /></motion.div>
+              <span className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#222] text-white text-[10px] uppercase tracking-widest rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">About</span>
+            </a>
+            <a href="#skills" className={`group relative ${tMuted} hover:${tText} transition-colors`}>
+              <motion.div whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.9 }}><Sparkles size={22} /></motion.div>
+              <span className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#222] text-white text-[10px] uppercase tracking-widest rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Services</span>
+            </a>
+            <a href="#cv" className={`group relative ${tMuted} hover:${tText} transition-colors`}>
+              <motion.div whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.9 }}><FileText size={22} /></motion.div>
+              <span className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#222] text-white text-[10px] uppercase tracking-widest rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">CV</span>
+            </a>
+            <a href="#work" className={`group relative ${tMuted} hover:${tText} transition-colors`}>
+              <motion.div whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.9 }}><Shapes size={22} /></motion.div>
+              <span className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#222] text-white text-[10px] uppercase tracking-widest rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Work</span>
+            </a>
+            <a href="#contact" className={`group relative ${tMuted} hover:${tText} transition-colors`}>
+              <motion.div whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.9 }}><Send size={22} /></motion.div>
+              <span className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#222] text-white text-[10px] uppercase tracking-widest rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Contact</span>
+            </a>
+            
+            {/* The vertical divider line */}
+            <div className={`w-[1px] h-6 ${isDark ? 'bg-white/20' : 'bg-black/20'} transition-colors duration-500`}></div>
+            
+            {/* The actual working Dark Mode Toggle */}
+            <button onClick={() => setIsDark(!isDark)} className={`group relative ${tMuted} hover:${tText} transition-colors`}>
+              <motion.div whileHover={{ scale: 1.2, rotate: isDark ? -20 : 20 }} whileTap={{ scale: 0.9 }}>
+                {isDark ? <Moon size={22} /> : <Sun size={22} />}
+              </motion.div>
+              <span className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#222] text-white text-[10px] uppercase tracking-widest rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none w-max">Theme</span>
+            </button>
+          </motion.nav>
+        </div>
+
         {/* HERO SECTION WITH FONT ANIMATIONS */}
-        <section className="min-h-screen flex flex-col justify-end p-6 md:p-12 pb-32">
+        <section className="min-h-screen flex flex-col justify-end p-6 md:p-12 pb-48">
           <motion.div initial="hidden" animate="visible" variants={containerVars}>
             <motion.p variants={wordVars} className={`max-w-2xl text-xl md:text-2xl ${tMuted} mb-8 leading-snug`}>
               Nigunthan Prignaselvam — digital marketer and sales professional based in Sri Lanka.
@@ -240,7 +272,7 @@ export default function Portfolio() {
         </section>
 
         {/* FOOTER CONTACT AREA */}
-        <footer id="contact" className={`p-6 md:p-12 border-t ${tBorder} pt-24 pb-32 md:pb-48 transition-colors duration-500`}>
+        <footer id="contact" className={`p-6 md:p-12 border-t ${tBorder} pt-24 pb-48 md:pb-56 transition-colors duration-500`}>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn} className="max-w-4xl mb-24">
             <h2 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter leading-[0.9] mb-8">
               Let's Connect

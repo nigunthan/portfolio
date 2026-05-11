@@ -124,7 +124,7 @@ export default function Portfolio() {
         <section className="min-h-screen flex flex-col justify-end p-6 md:p-12 pb-48">
           <motion.div initial="hidden" animate="visible" variants={containerVars}>
             <motion.p variants={wordVars} className={`max-w-2xl text-xl md:text-2xl ${tMuted} mb-8 leading-snug`}>
-              Nigunthan Prignaselvam — digital marketer and sales professional based in Sri Lanka.
+              Nigunthan Prignaselvam — Social media manager and sales professional based in Sri Lanka.
             </motion.p>
             
             <div className="overflow-hidden mb-2">
@@ -165,10 +165,10 @@ export default function Portfolio() {
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeIn} className="order-1 lg:order-2 flex flex-col justify-center">
             <h2 className={`uppercase tracking-widest text-xs font-bold ${tMuted} mb-8`}>Who Am I?</h2>
             <h3 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter leading-[0.9] mb-8">
-              Sales & Digital<br/>Strategist
+              Sales & Social<br/>Manager
             </h3>
             <p className={`text-lg md:text-xl ${tMuted} mb-12 max-w-2xl leading-relaxed`}>
-              With over 3 years of experience, I turn business strategies into impactful revenue growth. Currently based in Sri Lanka, I create dynamic campaigns & sleek content that not only look great but also support real marketing goals.
+              With over 7+ years of experience in Sales & Social Management, I turn business strategies into impactful revenue growth. Currently based in Sri Lanka, I create dynamic campaigns & sleek content that not only look great but also support real marketing goals.
             </p>
 
             <div className="grid grid-cols-2 gap-4">

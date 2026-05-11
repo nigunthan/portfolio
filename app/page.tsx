@@ -1,14 +1,36 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Mail, ExternalLink } from "lucide-react";
 import Link from "next/link";
 
+// Custom SVG Icons
+const GithubIcon = ({ size = 24 }: { size?: number }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.02c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A4.8 4.8 0 0 0 9 18v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+);
+const LinkedinIcon = ({ size = 24 }: { size?: number }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+);
+const FacebookIcon = ({ size = 24 }: { size?: number }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+);
+
 export default function Portfolio() {
+  const fadeIn = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+  };
+
   return (
-    <div className="min-h-screen bg-black text-[#ededed] font-sans selection:bg-white selection:text-black">
+    <div className="min-h-screen bg-[#050505] text-[#ededed] font-sans selection:bg-white selection:text-black relative">
       
-      {/* INLINE CSS FOR THE INFINITE SCROLLING RESUME BANNER */}
+      {/* PREMIUM CSS NOISE BACKGROUND (Just like Dilshard's) */}
+      <div 
+        className="fixed inset-0 pointer-events-none z-0 opacity-[0.04]" 
+        style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}
+      ></div>
+
+      {/* MARQUEE ANIMATION */}
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes marquee {
           0% { transform: translateX(0%); }
@@ -21,180 +43,199 @@ export default function Portfolio() {
         }
       `}} />
 
-      {/* TOP NAVBAR */}
-      <header className="fixed top-0 w-full flex justify-between items-center p-6 md:px-12 z-50 bg-black/50 backdrop-blur-md border-b border-white/10 text-sm font-bold uppercase tracking-widest text-white">
-        <div>Nigunthan</div>
-        <div className="hidden md:block text-[#666]">Digital Marketer</div>
-        <nav className="flex gap-6">
-          <a href="#about" className="hover:text-gray-400 transition-colors">About</a>
-          <a href="#work" className="hover:text-gray-400 transition-colors">Work</a>
-          <a href="#cv" className="hover:text-gray-400 transition-colors">CV</a>
-        </nav>
-      </header>
+      <div className="relative z-10">
+        {/* TOP NAVBAR */}
+        <header className="fixed top-0 w-full flex justify-between items-center p-6 md:px-12 z-50 bg-[#050505]/70 backdrop-blur-md border-b border-white/10 text-xs font-bold uppercase tracking-widest text-white">
+          <div className="text-sm">Nigunthan</div>
+          <div className="hidden md:block text-[#666]">Digital Marketer</div>
+          <nav className="flex gap-6">
+            <a href="#about" className="hover:text-[#aaa] transition-colors">About</a>
+            <a href="#work" className="hover:text-[#aaa] transition-colors">Work</a>
+            <a href="#cv" className="hover:text-[#aaa] transition-colors">CV</a>
+          </nav>
+        </header>
 
-      {/* HERO SECTION */}
-      <section className="min-h-screen flex flex-col justify-end p-6 md:p-12 pb-24 md:pb-32">
-        <motion.p 
-          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}
-          className="max-w-2xl text-xl md:text-3xl text-[#888] mb-8 leading-snug"
-        >
-          Nigunthan Prignaselvam — digital marketer and sales professional based in Sri Lanka
-        </motion.p>
-        <motion.h1 
-          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-[14vw] md:text-[11vw] leading-[0.85] font-black uppercase tracking-tighter text-white"
-        >
-          Digital<br/>Marketer
-        </motion.h1>
-      </section>
+        {/* HERO SECTION */}
+        <section className="min-h-screen flex flex-col justify-end p-6 md:p-12 pb-24 md:pb-32">
+          <motion.div initial="hidden" animate="visible" variants={fadeIn}>
+            <p className="max-w-2xl text-xl md:text-2xl text-[#888] mb-8 leading-snug">
+              Nigunthan Prignaselvam — digital marketer and sales professional based in Sri Lanka.
+            </p>
+            <h1 className="text-[14vw] md:text-[11vw] leading-[0.85] font-black uppercase tracking-tighter text-white mb-10">
+              Digital<br/>Marketer
+            </h1>
+            
+            {/* PILL BUTTONS */}
+            <div className="flex flex-wrap gap-4">
+              <a href="#contact" className="inline-flex items-center gap-3 px-8 py-4 bg-white text-black rounded-full font-bold uppercase tracking-widest text-xs hover:scale-105 transition-transform">
+                Let's Connect <ArrowUpRight size={18} strokeWidth={3} />
+              </a>
+              <a href="/resume.pdf" download className="inline-flex items-center gap-3 px-8 py-4 bg-transparent border border-white/20 text-white rounded-full font-bold uppercase tracking-widest text-xs hover:bg-white hover:text-black transition-all">
+                Download CV
+              </a>
+            </div>
+          </motion.div>
+        </section>
 
-      {/* WHO AM I */}
-      <section id="about" className="p-6 md:p-12 border-t border-white/10 grid md:grid-cols-[1fr_2.5fr] gap-12 md:gap-24 pt-24 pb-24">
-        <div>
-          <h2 className="uppercase tracking-widest text-xs font-bold text-[#666] md:sticky top-32">Who Am I?</h2>
-        </div>
-        <div>
-          <h3 className="text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter leading-[0.9] mb-12">
-            Sales & Digital<br/>Strategist
-          </h3>
-          <p className="text-lg md:text-2xl text-[#888] mb-16 max-w-3xl leading-relaxed">
-            With over 3 years of experience, I turn business strategies into impactful revenue growth. Currently based in Sri Lanka, I create dynamic campaigns & sleek content that not only look great but also support real marketing goals. Skilled across CRM, SEO, and Analytics, I focus on campaigns that feel fresh, purposeful, and engaging.
-          </p>
+        {/* WHO AM I & PHOTO */}
+        <section id="about" className="p-6 md:p-12 border-t border-white/10 grid lg:grid-cols-[1fr_1.2fr] gap-12 lg:gap-24 pt-24 pb-24">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeIn} className="order-2 lg:order-1">
+            {/* YOUR PHOTO INTEGRATION */}
+            <div className="w-full h-full min-h-[400px] md:min-h-[600px] rounded-[2rem] overflow-hidden bg-[#111] relative">
+              <img 
+                src="/profile.jpg" 
+                alt="Nigunthan Prignaselvam" 
+                className="absolute inset-0 w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+                onError={(e) => { e.currentTarget.style.display = 'none'; }}
+              />
+            </div>
+          </motion.div>
 
-          {/* BRUTALIST STATS GRID */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-[#111] p-6 md:p-8 rounded-[2rem] flex flex-col justify-between aspect-square">
-              <h4 className="text-5xl md:text-6xl font-black text-white">03+</h4>
-              <p className="text-xs uppercase tracking-widest text-[#666] font-bold">Years<br/>Experience</p>
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeIn} className="order-1 lg:order-2 flex flex-col justify-center">
+            <h2 className="uppercase tracking-widest text-xs font-bold text-[#666] mb-8">Who Am I?</h2>
+            <h3 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter leading-[0.9] mb-8 text-white">
+              Sales & Digital<br/>Strategist
+            </h3>
+            <p className="text-lg md:text-xl text-[#888] mb-12 max-w-2xl leading-relaxed">
+              With over 3 years of experience, I turn business strategies into impactful revenue growth. Currently based in Sri Lanka, I create dynamic campaigns & sleek content that not only look great but also support real marketing goals. Skilled across CRM, SEO, and Analytics, I focus on campaigns that feel fresh, purposeful, and engaging.
+            </p>
+
+            {/* BRUTALIST STATS GRID */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-[#111] p-6 md:p-8 rounded-[2rem] flex flex-col justify-between aspect-square">
+                <h4 className="text-5xl md:text-6xl font-black text-white mb-4">03+</h4>
+                <p className="text-xs uppercase tracking-widest text-[#666] font-bold">Years<br/>Experience</p>
+              </div>
+              <div className="bg-[#111] p-6 md:p-8 rounded-[2rem] flex flex-col justify-between aspect-square">
+                <h4 className="text-5xl md:text-6xl font-black text-white mb-4">30%</h4>
+                <p className="text-xs uppercase tracking-widest text-[#666] font-bold">Revenue<br/>Growth</p>
+              </div>
             </div>
-            <div className="bg-[#111] p-6 md:p-8 rounded-[2rem] flex flex-col justify-between aspect-square">
-              <h4 className="text-5xl md:text-6xl font-black text-white">30%</h4>
-              <p className="text-xs uppercase tracking-widest text-[#666] font-bold">Revenue<br/>Growth</p>
-            </div>
-            <div className="bg-[#111] p-6 md:p-8 rounded-[2rem] flex flex-col justify-between aspect-square">
-              <h4 className="text-5xl md:text-6xl font-black text-white">02+</h4>
-              <p className="text-xs uppercase tracking-widest text-[#666] font-bold">Pages<br/>Managed</p>
-            </div>
-            <div className="bg-[#111] p-6 md:p-8 rounded-[2rem] flex flex-col justify-between aspect-square">
-              <h4 className="text-3xl md:text-4xl font-black text-white leading-tight">SEO<br/>SALES</h4>
-              <p className="text-xs uppercase tracking-widest text-[#666] font-bold">Core<br/>Focus</p>
-            </div>
+          </motion.div>
+        </section>
+
+        {/* BIG QUOTE */}
+        <section className="p-6 md:p-12 border-t border-white/10 py-32 md:py-48 flex flex-col items-center justify-center text-center">
+          <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn} className="text-4xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter leading-[0.9] mb-8">
+            I don't just sell.<br/>
+            <span className="text-[#444]">I shape growth.</span>
+          </motion.h2>
+          <motion.p initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn} className="text-xl md:text-2xl text-[#888] font-medium max-w-2xl">
+            Turning digital interactions into living communities that demand attention.
+          </motion.p>
+        </section>
+
+        {/* FEATURED PROJECTS (WORK) */}
+        <section id="work" className="p-6 md:p-12 border-t border-white/10 grid lg:grid-cols-[1fr_3fr] gap-12 lg:gap-24 pt-24 pb-24">
+          <div>
+            <h2 className="uppercase tracking-widest text-xs font-bold text-[#666] lg:sticky top-32">Featured Pages</h2>
           </div>
-        </div>
-      </section>
-
-      {/* QUOTE SECTION */}
-      <section className="p-6 md:p-12 border-t border-white/10 py-32 md:py-48 flex flex-col items-center justify-center text-center">
-        <h2 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter leading-[0.9] mb-8">
-          I don't just sell.<br/>
-          <span className="text-[#444]">I shape growth.</span>
-        </h2>
-        <p className="text-xl md:text-3xl text-[#888] font-medium max-w-3xl">
-          Turning digital interactions into living communities that demand attention.
-        </p>
-      </section>
-
-      {/* FEATURED PROJECTS (WORK) */}
-      <section id="work" className="p-6 md:p-12 border-t border-white/10 grid md:grid-cols-[1fr_2.5fr] gap-12 md:gap-24 pt-24 pb-24">
-        <div>
-          <h2 className="uppercase tracking-widest text-xs font-bold text-[#666] md:sticky top-32">Featured Pages</h2>
-        </div>
-        <div className="grid md:grid-cols-2 gap-6">
-          {managedPages.map((page, index) => (
-            <a key={index} href={page.link} target="_blank" rel="noopener noreferrer" className="group block bg-[#111] p-8 md:p-12 rounded-[2.5rem] hover:bg-[#1a1a1a] transition-all duration-300 flex flex-col justify-between min-h-[400px]">
-              <div className="flex justify-between items-start">
-                <span className="uppercase tracking-widest text-xs font-bold text-[#666]">{page.platforms}</span>
-                <div className="w-12 h-12 bg-white text-black rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <ArrowUpRight size={24} strokeWidth={3} />
+          <div className="grid md:grid-cols-2 gap-6">
+            {managedPages.map((page, index) => (
+              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeIn} key={index} className="bg-[#111] p-8 md:p-12 rounded-[2.5rem] flex flex-col justify-between min-h-[450px]">
+                <div className="mb-12">
+                  <span className="uppercase tracking-widest text-xs font-bold text-[#666] block mb-8">{page.platforms}</span>
+                  <h3 className="text-4xl md:text-5xl font-black uppercase tracking-tighter text-white mb-4">{page.name}</h3>
+                  <p className="text-[#888] text-lg leading-relaxed">{page.desc}</p>
                 </div>
-              </div>
-              <div>
-                <h3 className="text-4xl md:text-5xl font-black uppercase tracking-tighter text-white mb-4">{page.name}</h3>
-                <p className="text-[#888] text-lg leading-relaxed">{page.desc}</p>
-              </div>
+                <div>
+                  <a href={page.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 px-6 py-3 bg-white text-black rounded-full font-bold uppercase tracking-widest text-xs hover:scale-105 transition-transform">
+                    View Page <ArrowUpRight size={16} strokeWidth={3} />
+                  </a>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* SCROLLING RESUME BANNER */}
+        <a href="/resume.pdf" download className="block border-y border-white/10 py-12 md:py-20 bg-white text-black overflow-hidden hover:bg-[#e0e0e0] transition-colors cursor-pointer">
+          <div className="animate-marquee whitespace-nowrap flex items-center">
+            <h2 className="text-7xl md:text-[10vw] font-black uppercase tracking-tighter leading-none inline-block">
+              DOWNLOAD • RESUME • DOWNLOAD • RESUME • DOWNLOAD • RESUME • DOWNLOAD • RESUME •&nbsp;
+            </h2>
+          </div>
+        </a>
+
+        {/* CURRICULUM VITAE */}
+        <section id="cv" className="p-6 md:p-12 border-t border-white/10 grid lg:grid-cols-[1fr_3fr] gap-12 lg:gap-24 pt-24 pb-24">
+          <div>
+            <h2 className="uppercase tracking-widest text-xs font-bold text-[#666] lg:sticky top-32">Curriculum Vitae</h2>
+          </div>
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeIn}>
+            
+            {/* Experience */}
+            <h3 className="text-3xl font-black uppercase tracking-tighter mb-12">Professional History</h3>
+            <div className="flex flex-col gap-12 border-b border-white/10 pb-16">
+              {experiences.map((exp, index) => (
+                <div key={index} className="grid md:grid-cols-[1fr_2fr] gap-4 md:gap-8">
+                  <div>
+                    <h4 className="text-xl font-bold uppercase text-white">{exp.role}</h4>
+                    <p className="text-xs font-bold uppercase tracking-widest text-[#666] mt-2">{exp.date}</p>
+                  </div>
+                  <div>
+                    <h5 className="text-lg font-bold text-white mb-4 uppercase tracking-wide">{exp.company}</h5>
+                    <p className="text-[#888] leading-relaxed text-lg">{exp.points}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Technical Arsenal (Skills) */}
+            <h3 className="text-3xl font-black uppercase tracking-tighter mt-16 mb-12">Technical Arsenal</h3>
+            <div className="flex flex-wrap gap-3 border-b border-white/10 pb-16">
+              {skills.map((skill, index) => (
+                <span key={index} className="px-6 py-4 bg-[#111] rounded-full text-sm font-bold uppercase tracking-widest text-[#ccc]">
+                  {skill}
+                </span>
+              ))}
+            </div>
+
+            {/* Education */}
+            <h3 className="text-3xl font-black uppercase tracking-tighter mt-16 mb-12">Education</h3>
+            <div className="flex flex-col gap-8">
+              {education.map((edu, index) => (
+                <div key={index} className="grid md:grid-cols-[1fr_2fr] gap-4 items-center">
+                  <p className="text-xs font-bold uppercase tracking-widest text-[#666]">{edu.date}</p>
+                  <h4 className="text-lg font-bold uppercase text-white">{edu.degree} — <span className="text-[#888]">{edu.school}</span></h4>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </section>
+
+        {/* FOOTER CONTACT AREA */}
+        <footer id="contact" className="p-6 md:p-12 border-t border-white/10 pt-24 pb-12">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn} className="max-w-4xl mb-24">
+            <h2 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter leading-[0.9] mb-8">
+              Let's Connect
+            </h2>
+            <p className="text-xl md:text-2xl text-[#888] mb-12 max-w-2xl leading-relaxed">
+              I'm always open to discussing new projects, sales strategies, or creative marketing ideas. Send me an email and let's build something great.
+            </p>
+            
+            {/* PILL BUTTON FOR CONTACT */}
+            <a href="mailto:nigunthanprignaselvam@gmail.com" className="inline-flex items-center gap-3 px-8 py-5 bg-white text-black rounded-full font-bold uppercase tracking-widest text-sm hover:scale-105 transition-transform">
+              Send an Email <Mail size={20} strokeWidth={3} />
             </a>
-          ))}
-        </div>
-      </section>
-
-      {/* SCROLLING RESUME BANNER */}
-      <a href="/resume.pdf" download className="block border-y border-white/10 py-12 md:py-20 bg-white text-black overflow-hidden hover:bg-[#e0e0e0] transition-colors cursor-pointer">
-        <div className="animate-marquee whitespace-nowrap flex items-center">
-          <h2 className="text-7xl md:text-[10vw] font-black uppercase tracking-tighter leading-none inline-block">
-            DOWNLOAD • RESUME • DOWNLOAD • RESUME • DOWNLOAD • RESUME • DOWNLOAD • RESUME •&nbsp;
-          </h2>
-        </div>
-      </a>
-
-      {/* CURRICULUM VITAE */}
-      <section id="cv" className="p-6 md:p-12 border-t border-white/10 grid md:grid-cols-[1fr_2.5fr] gap-12 md:gap-24 pt-24 pb-24">
-        <div>
-          <h2 className="uppercase tracking-widest text-xs font-bold text-[#666] md:sticky top-32">Curriculum Vitae</h2>
-        </div>
-        <div>
-          {/* Experience */}
-          <h3 className="text-3xl font-black uppercase tracking-tighter mb-12">Professional History</h3>
-          <div className="flex flex-col gap-12">
-            {experiences.map((exp, index) => (
-              <div key={index} className="grid md:grid-cols-[1fr_2fr] gap-4 md:gap-8 border-b border-white/10 pb-12">
-                <div>
-                  <h4 className="text-xl font-bold uppercase text-white">{exp.role}</h4>
-                  <p className="text-sm font-bold uppercase tracking-widest text-[#666] mt-2">{exp.date}</p>
-                </div>
-                <div>
-                  <h5 className="text-lg font-bold text-white mb-4 uppercase tracking-wide">{exp.company}</h5>
-                  <p className="text-[#888] leading-relaxed text-lg">{exp.points}</p>
-                </div>
-              </div>
-            ))}
+          </motion.div>
+          
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center text-xs font-bold uppercase tracking-widest text-[#666] border-t border-white/10 pt-8 gap-6">
+            <p>© {new Date().getFullYear()} Nigunthan Prignaselvam. All rights reserved.</p>
+            <div className="flex gap-6">
+              <Link href="https://www.linkedin.com/in/nigunthan/" target="_blank" className="p-3 bg-[#111] rounded-full hover:bg-white hover:text-black transition-colors">
+                <LinkedinIcon size={18} />
+              </Link>
+              <Link href="https://facebook.com/nigunthan" target="_blank" className="p-3 bg-[#111] rounded-full hover:bg-white hover:text-black transition-colors">
+                <FacebookIcon size={18} />
+              </Link>
+              <Link href="https://github.com/nigunthan" target="_blank" className="p-3 bg-[#111] rounded-full hover:bg-white hover:text-black transition-colors">
+                <GithubIcon size={18} />
+              </Link>
+            </div>
           </div>
-
-          {/* Technical Arsenal (Skills) */}
-          <h3 className="text-3xl font-black uppercase tracking-tighter mt-24 mb-12">Technical Arsenal</h3>
-          <div className="flex flex-wrap gap-3 border-b border-white/10 pb-12">
-            {skills.map((skill, index) => (
-              <span key={index} className="px-6 py-4 bg-[#111] rounded-full text-sm font-bold uppercase tracking-widest text-[#ccc]">
-                {skill}
-              </span>
-            ))}
-          </div>
-
-          {/* Education */}
-          <h3 className="text-3xl font-black uppercase tracking-tighter mt-12 mb-12">Education</h3>
-          <div className="flex flex-col gap-6">
-            {education.map((edu, index) => (
-              <div key={index} className="grid md:grid-cols-[1fr_2fr] gap-4 items-center">
-                <p className="text-sm font-bold uppercase tracking-widest text-[#666]">{edu.date}</p>
-                <h4 className="text-lg font-bold uppercase text-white">{edu.degree} — <span className="text-[#888]">{edu.school}</span></h4>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FOOTER CONTACT AREA */}
-      <footer id="contact" className="p-6 md:p-12 border-t border-white/10 pt-24 pb-12">
-        <div className="max-w-4xl mb-24">
-          <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-[0.9] mb-8">
-            Let's Connect
-          </h2>
-          <p className="text-xl md:text-2xl text-[#888] mb-12">
-            I'm always open to discussing new projects, sales strategies, or creative marketing ideas. Send me an email.
-          </p>
-          <a href="mailto:nigunthanprignaselvam@gmail.com" className="inline-block text-2xl md:text-4xl font-black uppercase tracking-tighter border-b-4 border-white pb-2 hover:text-[#888] hover:border-[#888] transition-all">
-            nigunthanprignaselvam@gmail.com
-          </a>
-        </div>
-        
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center text-xs font-bold uppercase tracking-widest text-[#666] border-t border-white/10 pt-8 gap-4">
-          <p>© {new Date().getFullYear()} Nigunthan Prignaselvam. All rights reserved.</p>
-          <div className="flex gap-6">
-            <a href="https://www.linkedin.com/in/nigunthan/" target="_blank" className="hover:text-white transition-colors">LinkedIn</a>
-            <a href="https://facebook.com/nigunthan" target="_blank" className="hover:text-white transition-colors">Facebook</a>
-            <a href="https://github.com/nigunthan" target="_blank" className="hover:text-white transition-colors">GitHub</a>
-          </div>
-        </div>
-      </footer>
+        </footer>
+      </div>
     </div>
   );
 }
@@ -222,13 +263,13 @@ const experiences =[
   {
     role: "Senior Sales Executive",
     company: "Simplebooks (Pvt) Ltd",
-    date: "Apr 2025 - Present",
+    date: "Jan 2025 - Present",
     points: "Improved revenue by 30%, generating additional $2.5 mln. through strategic sales initiatives. Build and maintain strong client relationships while executing strategies that contribute to overall company success."
   },
   {
     role: "Social Media Manager",
     company: "Ider (Private) limited",
-    date: "Jul 2023 - Mar 2025",
+    date: "2023 - Present",
     points: "Built an engaged golf community across Facebook, Instagram, and Twitter (X) in 01 Year, expanding audience reach. Managed digital presence and content strategy for Golf Essentials."
   },
   {

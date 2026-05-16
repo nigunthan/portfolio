@@ -292,7 +292,7 @@ export default function Portfolio() {
               <Link href="https://www.linkedin.com/in/nigunthan/" target="_blank" className={`p-3 ${tCard} rounded-full hover:${tInvertBg} hover:${tInvertText} transition-colors`}>
                 <LinkedinIcon size={18} />
               </Link>
-              <Link href="https://facebook.com/nigunthan" target="_blank" className={`p-3 ${tCard} rounded-full hover:${tInvertBg} hover:${tInvertText} transition-colors`}>
+              <Link href="https://www.facebook.com/nigunthanprignaselvam/" target="_blank" className={`p-3 ${tCard} rounded-full hover:${tInvertBg} hover:${tInvertText} transition-colors`}>
                 <FacebookIcon size={18} />
               </Link>
               <Link href="https://github.com/nigunthan" target="_blank" className={`p-3 ${tCard} rounded-full hover:${tInvertBg} hover:${tInvertText} transition-colors`}>

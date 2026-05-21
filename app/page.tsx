@@ -6,14 +6,17 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 
 // Custom SVG Icons
-const GithubIcon = ({ size = 24 }: { size?: number }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.02c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A4.8 4.8 0 0 0 9 18v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+const GithubIcon = ({ className = "", size = 24 }: { className?: string, size?: number }) => (
+  <svg className={className} xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.02c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A4.8 4.8 0 0 0 9 18v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
 );
-const LinkedinIcon = ({ size = 24 }: { size?: number }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+const LinkedinIcon = ({ className = "", size = 24 }: { className?: string, size?: number }) => (
+  <svg className={className} xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
 );
-const FacebookIcon = ({ size = 24 }: { size?: number }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+const FacebookIcon = ({ className = "", size = 24 }: { className?: string, size?: number }) => (
+  <svg className={className} xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+);
+const InstagramIcon = ({ className = "", size = 24 }: { className?: string, size?: number }) => (
+  <svg className={className} xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
 );
 
 export default function Portfolio() {
@@ -41,7 +44,9 @@ export default function Portfolio() {
     }
   });
 
-  // Calculate exactly which nav should show based on your rules
+  // Scroll Rules: 
+  // - Top nav shows when at the very top OR when scrolling UP.
+  // - Bottom nav shows ONLY when scrolling DOWN (and not at top).
   const showTopNav = isAtTop || !isScrollingDown;
   const showBottomNav = !isAtTop && isScrollingDown;
 
@@ -55,11 +60,13 @@ export default function Portfolio() {
   const tText = isDark ? "text-[#ededed]" : "text-[#111111]";
   const tCard = isDark ? "bg-[#111111]" : "bg-white";
   const tBorder = isDark ? "border-white/10" : "border-black/10";
+  const tHoverBorder = isDark ? "hover:border-white/30" : "hover:border-black/30";
   const tMuted = isDark ? "text-[#888888]" : "text-[#666666]";
   const tInvertBg = isDark ? "bg-white" : "bg-[#111111]";
   const tInvertText = isDark ? "text-black" : "text-white";
   const tGlass = isDark ? "bg-white/5" : "bg-black/5";
-  const tWaterdrop = isDark ? "bg-white/15" : "bg-black/10";
+  // The highly visible color for the iOS waterdrop hover bubble
+  const tWaterdrop = isDark ? "bg-white/20" : "bg-black/10"; 
 
   const containerVars = {
     hidden: { opacity: 0 },
@@ -117,15 +124,15 @@ export default function Portfolio() {
                 key={item} 
                 href={`#${item.toLowerCase()}`}
                 onMouseEnter={() => setHoveredTop(item)}
-                className={`relative px-4 py-3 text-[10px] md:text-xs font-black uppercase tracking-widest ${tMuted} hover:${tText} transition-colors ${item === 'Services' ? 'hidden md:block' : ''}`}
+                className={`relative px-5 py-3 text-[10px] md:text-xs font-black uppercase tracking-widest ${hoveredTop === item ? tText : tMuted} transition-colors duration-300 ${item === 'Services' ? 'hidden md:block' : ''}`}
               >
-                {/* iOS FLUID BACKGROUND MORPH */}
+                {/* TRUE iOS FLUID WATERDROP BACKGROUND */}
                 {hoveredTop === item && (
                   <motion.div
-                    layoutId="top-nav-hover"
+                    layoutId="top-nav-waterdrop"
                     className={`absolute inset-0 rounded-full ${tWaterdrop}`}
                     initial={false}
-                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                    transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
                   />
                 )}
                 <span className="relative z-10">{item}</span>
@@ -145,21 +152,20 @@ export default function Portfolio() {
             onMouseLeave={() => setHoveredBottom(null)}
             className={`flex items-center px-4 py-3 ${tGlass} backdrop-blur-xl border ${tBorder} rounded-full shadow-2xl pointer-events-auto transition-colors duration-500`}
           >
-            
             {bottomNavItems.map((item) => (
               <a 
                 key={item.id} 
                 href={`#${item.id}`} 
                 onMouseEnter={() => setHoveredBottom(item.id)}
-                className={`relative group px-4 py-4 ${tMuted} hover:${tText} transition-colors`}
+                className={`relative group px-5 py-4 ${hoveredBottom === item.id ? tText : tMuted} transition-colors duration-300`}
               >
-                {/* iOS FLUID BACKGROUND MORPH */}
+                {/* TRUE iOS FLUID WATERDROP BACKGROUND */}
                 {hoveredBottom === item.id && (
                   <motion.div
-                    layoutId="bottom-nav-hover"
+                    layoutId="bottom-nav-waterdrop"
                     className={`absolute inset-0 rounded-full ${tWaterdrop}`}
                     initial={false}
-                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                    transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
                   />
                 )}
                 <span className="relative z-10 block transition-transform group-active:scale-90 duration-300">
@@ -174,17 +180,18 @@ export default function Portfolio() {
             
             <div className={`w-[1px] h-6 ${isDark ? 'bg-white/20' : 'bg-black/20'} transition-colors duration-500 mx-2`}></div>
             
+            {/* Dark Mode Toggle */}
             <button 
               onClick={() => setIsDark(!isDark)} 
               onMouseEnter={() => setHoveredBottom('theme')}
-              className={`relative group px-4 py-4 ${tMuted} hover:${tText} transition-colors`}
+              className={`relative group px-5 py-4 ${hoveredBottom === 'theme' ? tText : tMuted} transition-colors duration-300`}
             >
               {hoveredBottom === 'theme' && (
                 <motion.div
-                  layoutId="bottom-nav-hover"
+                  layoutId="bottom-nav-waterdrop"
                   className={`absolute inset-0 rounded-full ${tWaterdrop}`}
                   initial={false}
-                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                  transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
                 />
               )}
               <span className="relative z-10 block transition-transform group-active:scale-90 duration-300">
@@ -233,7 +240,7 @@ export default function Portfolio() {
               <img 
                 src="/profile.jpg" 
                 alt="Nigunthan Prignaselvam" 
-                className="absolute inset-0 w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+                className="absolute inset-0 w-full h-full object-cover grayscale hover:grayscale-0 hover:scale-105 transition-all duration-700 cursor-pointer"
                 onError={(e) => { e.currentTarget.style.display = 'none'; }}
               />
             </div>
@@ -249,11 +256,11 @@ export default function Portfolio() {
             </p>
 
             <div className="grid grid-cols-2 gap-4">
-              <div className={`${tCard} p-6 md:p-8 rounded-[2rem] flex flex-col justify-between aspect-square transition-colors duration-500`}>
+              <div className={`${tCard} border border-transparent ${tHoverBorder} hover:-translate-y-2 p-6 md:p-8 rounded-[2rem] flex flex-col justify-between aspect-square transition-all duration-300 shadow-lg cursor-default`}>
                 <h4 className="text-5xl md:text-6xl font-black mb-4">03+</h4>
                 <p className={`text-xs uppercase tracking-widest ${tMuted} font-bold`}>Years<br/>Experience</p>
               </div>
-              <div className={`${tCard} p-6 md:p-8 rounded-[2rem] flex flex-col justify-between aspect-square transition-colors duration-500`}>
+              <div className={`${tCard} border border-transparent ${tHoverBorder} hover:-translate-y-2 p-6 md:p-8 rounded-[2rem] flex flex-col justify-between aspect-square transition-all duration-300 shadow-lg cursor-default`}>
                 <h4 className="text-5xl md:text-6xl font-black mb-4">30%</h4>
                 <p className={`text-xs uppercase tracking-widest ${tMuted} font-bold`}>Revenue<br/>Growth</p>
               </div>
@@ -261,17 +268,17 @@ export default function Portfolio() {
           </motion.div>
         </section>
 
-        {/* DEDICATED SKILLS & SERVICES SECTION */}
+        {/* SKILLS SECTION */}
         <section id="skills" className={`p-6 md:p-12 border-t ${tBorder} pt-24 pb-24 transition-colors duration-500`}>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn}>
             <h2 className={`uppercase tracking-widest text-xs font-bold ${tMuted} mb-12 text-center`}>Services & Expertise</h2>
-            <h3 className="text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter leading-[0.9] mb-16 text-center max-w-4xl mx-auto">
+            <h3 className="text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter leading-[0.9] mb-16 text-center max-w-4xl mx-auto hover:scale-[1.02] transition-transform duration-500">
               Everything needed to scale your brand.
             </h3>
             
             <div className="flex flex-wrap justify-center gap-4 max-w-5xl mx-auto">
               {skills.map((skill, index) => (
-                <span key={index} className={`px-6 py-4 md:px-8 md:py-6 ${tCard} rounded-full text-sm md:text-lg font-black uppercase tracking-widest hover:scale-105 transition-all duration-300 shadow-sm cursor-default`}>
+                <span key={index} className={`px-6 py-4 md:px-8 md:py-6 ${tCard} border border-transparent ${tHoverBorder} rounded-full text-sm md:text-lg font-black uppercase tracking-widest hover:-translate-y-2 hover:shadow-xl hover:text-blue-500 dark:hover:text-blue-400 transition-all duration-300 cursor-default`}>
                   {skill}
                 </span>
               ))}
@@ -279,25 +286,35 @@ export default function Portfolio() {
           </motion.div>
         </section>
 
-        {/* FEATURED PROJECTS (WORK) */}
+        {/* WORK SECTION */}
         <section id="work" className={`p-6 md:p-12 border-t ${tBorder} grid lg:grid-cols-[1fr_3fr] gap-12 lg:gap-24 pt-24 pb-24 transition-colors duration-500`}>
           <div>
             <h2 className={`uppercase tracking-widest text-xs font-bold ${tMuted} lg:sticky top-32`}>Featured Pages</h2>
           </div>
           <div className="grid md:grid-cols-2 gap-6">
             {managedPages.map((page, index) => (
-              <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeIn} key={index} className={`${tCard} p-8 md:p-12 rounded-[2.5rem] flex flex-col justify-between min-h-[450px] transition-colors duration-500`}>
+              <motion.a 
+                href={page.link} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                initial="hidden" 
+                whileInView="visible" 
+                viewport={{ once: true, margin: "-50px" }} 
+                variants={fadeIn} 
+                key={index} 
+                className={`group ${tCard} border border-transparent ${tHoverBorder} hover:-translate-y-3 p-8 md:p-12 rounded-[2.5rem] flex flex-col justify-between min-h-[450px] transition-all duration-500 shadow-lg`}
+              >
                 <div className="mb-12">
-                  <span className={`uppercase tracking-widest text-xs font-bold ${tMuted} block mb-8`}>{page.platforms}</span>
+                  <span className={`uppercase tracking-widest text-xs font-bold ${tMuted} block mb-8 group-hover:text-blue-500 transition-colors`}>{page.platforms}</span>
                   <h3 className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-4 leading-[0.9]">{page.name}</h3>
-                  <p className={`${tMuted} text-lg leading-relaxed`}>{page.desc}</p>
+                  <p className={`${tMuted} text-lg leading-relaxed group-hover:${tText} transition-colors duration-300`}>{page.desc}</p>
                 </div>
                 <div>
-                  <a href={page.link} target="_blank" rel="noopener noreferrer" className={`inline-flex items-center gap-3 px-6 py-3 ${tInvertBg} ${tInvertText} rounded-full font-bold uppercase tracking-widest text-xs hover:scale-105 transition-transform`}>
+                  <div className={`inline-flex items-center gap-3 px-6 py-3 ${tInvertBg} ${tInvertText} rounded-full font-bold uppercase tracking-widest text-xs group-hover:scale-105 transition-transform`}>
                     View Page <ArrowUpRight size={16} strokeWidth={3} />
-                  </a>
+                  </div>
                 </div>
-              </motion.div>
+              </motion.a>
             ))}
           </div>
         </section>
@@ -318,37 +335,35 @@ export default function Portfolio() {
           </div>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeIn}>
             
-            {/* Experience */}
             <h3 className="text-3xl font-black uppercase tracking-tighter mb-12">Professional History</h3>
             <div className={`flex flex-col gap-12 border-b ${tBorder} pb-16`}>
               {experiences.map((exp, index) => (
-                <div key={index} className="grid md:grid-cols-[1fr_2fr] gap-4 md:gap-8">
+                <div key={index} className="group grid md:grid-cols-[1fr_2fr] gap-4 md:gap-8 hover:translate-x-4 transition-transform duration-300">
                   <div>
-                    <h4 className="text-xl font-bold uppercase">{exp.role}</h4>
+                    <h4 className="text-xl font-bold uppercase group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors">{exp.role}</h4>
                     <p className={`text-xs font-bold uppercase tracking-widest ${tMuted} mt-2`}>{exp.date}</p>
                   </div>
                   <div>
                     <h5 className="text-lg font-bold mb-4 uppercase tracking-wide">{exp.company}</h5>
-                    <p className={`${tMuted} leading-relaxed text-lg`}>{exp.points}</p>
+                    <p className={`${tMuted} group-hover:${tText} leading-relaxed text-lg transition-colors duration-300`}>{exp.points}</p>
                   </div>
                 </div>
               ))}
             </div>
 
-            {/* Education */}
             <h3 className="text-3xl font-black uppercase tracking-tighter mt-16 mb-12">Education</h3>
             <div className="flex flex-col gap-8">
               {education.map((edu, index) => (
-                <div key={index} className="grid md:grid-cols-[1fr_2fr] gap-4 items-center">
+                <div key={index} className="group grid md:grid-cols-[1fr_2fr] gap-4 items-center hover:translate-x-4 transition-transform duration-300">
                   <p className={`text-xs font-bold uppercase tracking-widest ${tMuted}`}>{edu.date}</p>
-                  <h4 className="text-lg font-bold uppercase">{edu.degree} — <span className={tMuted}>{edu.school}</span></h4>
+                  <h4 className="text-lg font-bold uppercase group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors">{edu.degree} — <span className={tMuted}>{edu.school}</span></h4>
                 </div>
               ))}
             </div>
           </motion.div>
         </section>
 
-        {/* FOOTER CONTACT AREA */}
+        {/* FOOTER */}
         <footer id="contact" className={`p-6 md:p-12 border-t ${tBorder} pt-24 pb-48 md:pb-56 transition-colors duration-500`}>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn} className="max-w-4xl mb-24">
             <h2 className="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter leading-[0.9] mb-8">
@@ -365,15 +380,20 @@ export default function Portfolio() {
           
           <div className={`flex flex-col md:flex-row justify-between items-start md:items-center text-xs font-bold uppercase tracking-widest ${tMuted} border-t ${tBorder} pt-8 gap-6`}>
             <p>© {new Date().getFullYear()} Nigunthan Prignaselvam. All rights reserved.</p>
-            <div className="flex gap-6">
-              <Link href="https://www.linkedin.com/in/nigunthan/" target="_blank" className={`p-3 ${tCard} rounded-full hover:${tInvertBg} hover:${tInvertText} transition-colors`}>
-                <LinkedinIcon size={18} />
+            
+            {/* SOCIAL LOGOS WITH BRAND COLOR HOVER */}
+            <div className="flex gap-4">
+              <Link href="https://www.linkedin.com/in/nigunthan/" target="_blank" className={`group p-4 ${tCard} rounded-full hover:bg-white transition-all hover:-translate-y-1 hover:shadow-lg`}>
+                <LinkedinIcon className={`text-[#888] group-hover:text-[#0077b5] transition-colors duration-300`} size={20} />
               </Link>
-              <Link href="https://facebook.com/nigunthan" target="_blank" className={`p-3 ${tCard} rounded-full hover:${tInvertBg} hover:${tInvertText} transition-colors`}>
-                <FacebookIcon size={18} />
+              <Link href="https://facebook.com/nigunthan" target="_blank" className={`group p-4 ${tCard} rounded-full hover:bg-white transition-all hover:-translate-y-1 hover:shadow-lg`}>
+                <FacebookIcon className={`text-[#888] group-hover:text-[#1877F2] transition-colors duration-300`} size={20} />
               </Link>
-              <Link href="https://github.com/nigunthan" target="_blank" className={`p-3 ${tCard} rounded-full hover:${tInvertBg} hover:${tInvertText} transition-colors`}>
-                <GithubIcon size={18} />
+              <Link href="https://www.instagram.com/kaanth_97/" target="_blank" className={`group p-4 ${tCard} rounded-full hover:bg-white transition-all hover:-translate-y-1 hover:shadow-lg`}>
+                <InstagramIcon className={`text-[#888] group-hover:text-[#E1306C] transition-colors duration-300`} size={20} />
+              </Link>
+              <Link href="https://github.com/nigunthan" target="_blank" className={`group p-4 ${tCard} rounded-full hover:bg-white transition-all hover:-translate-y-1 hover:shadow-lg`}>
+                <GithubIcon className={`text-[#888] group-hover:text-black transition-colors duration-300`} size={20} />
               </Link>
             </div>
           </div>

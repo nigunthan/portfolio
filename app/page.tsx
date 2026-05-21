@@ -3,9 +3,9 @@
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { ArrowUpRight, Mail, Sun, Moon, User, Sparkles, FileText, Shapes, Send } from "lucide-react";
 import Link from "next/link";
-import { useState, useEffect, MouseEvent } from "react";
+import { useState, useEffect } from "react";
 
-// Custom SVG Icons
+// Custom SVG Social Icons
 const GithubIcon = ({ className = "", size = 24 }: { className?: string, size?: number }) => (
   <svg className={className} xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.02c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A4.8 4.8 0 0 0 9 18v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
 );
@@ -27,6 +27,10 @@ export default function Portfolio() {
   const [isAtTop, setIsAtTop] = useState(true);
   const [isScrollingDown, setIsScrollingDown] = useState(false);
   const { scrollY } = useScroll();
+
+  // iOS Fluid Hover States
+  const [hoveredTop, setHoveredTop] = useState<string | null>(null);
+  const [hoveredBottom, setHoveredBottom] = useState<string | null>(null);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious() || 0;
@@ -56,6 +60,7 @@ export default function Portfolio() {
   const tInvertBg = isDark ? "bg-white" : "bg-[#111111]";
   const tInvertText = isDark ? "text-black" : "text-white";
   const tGlass = isDark ? "bg-white/5" : "bg-black/5";
+  const tWaterdrop = isDark ? "bg-white/20" : "bg-black/10"; 
 
   const containerVars = {
     hidden: { opacity: 0 },
@@ -68,16 +73,6 @@ export default function Portfolio() {
   const fadeIn = {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
-  };
-
-  // TRUE iOS LIQUID WATERDROP FUNCTION
-  const handleLiquidHover = (e: MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
-    const target = e.currentTarget;
-    const rect = target.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    target.style.setProperty('--mouse-x', `${x}px`);
-    target.style.setProperty('--mouse-y', `${y}px`);
   };
 
   const topNavItems = ['About', 'Work', 'CV', 'Services', 'Contact'];
@@ -94,40 +89,29 @@ export default function Portfolio() {
   return (
     <div className={`min-h-screen ${tBg} ${tText} font-sans selection:${tInvertBg} selection:${tInvertText} transition-colors duration-500 relative overflow-x-hidden`}>
       
-      {/* GLOBAL CSS STYLES FOR LIQUID REFRACTION */}
-      <style dangerouslySetInnerHTML={{__html: `
-        @keyframes marquee { 0% { transform: translateX(0%); } 100% { transform: translateX(-50%); } }
-        .animate-marquee { display: inline-block; white-space: nowrap; animation: marquee 15s linear infinite; }
-        
-        .liquid-btn {
-          position: relative;
-          overflow: hidden;
-        }
-        .liquid-btn::before {
-          content: '';
-          position: absolute;
-          top: var(--mouse-y, 50%);
-          left: var(--mouse-x, 50%);
-          width: 0; height: 0;
-          background: radial-gradient(circle closest-side, ${isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.1)'}, transparent);
-          transform: translate(-50%, -50%);
-          transition: width 0.4s ease-out, height 0.4s ease-out, opacity 0.4s ease-out;
-          border-radius: 50%;
-          opacity: 0;
-          backdrop-filter: blur(8px);
-        }
-        .liquid-btn:hover::before {
-          width: 300%;
-          height: 300%;
-          opacity: 1;
-        }
-      `}} />
+      {/* 
+        THE SECRET TO APPLE'S LIQUID EFFECT:
+        This invisible SVG creates a "Gooey" physics filter.
+        When applied to a container, it makes overlapping bubbles melt together like water drops! 
+      */}
+      <svg width="0" height="0" className="absolute hidden">
+        <filter id="gooey">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur" />
+          <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -10" result="gooey" />
+          <feComposite in="SourceGraphic" in2="gooey" operator="atop" />
+        </filter>
+      </svg>
 
       {/* BACKGROUND NOISE */}
       <div 
         className="fixed inset-0 pointer-events-none z-0 opacity-[0.04]" 
         style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}
       ></div>
+
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes marquee { 0% { transform: translateX(0%); } 100% { transform: translateX(-50%); } }
+        .animate-marquee { display: inline-block; white-space: nowrap; animation: marquee 15s linear infinite; }
+      `}} />
 
       <div className="relative z-10">
         
@@ -138,18 +122,40 @@ export default function Portfolio() {
           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           className="fixed top-6 w-full flex justify-center z-50 px-4 pointer-events-none"
         >
-          <nav className={`pointer-events-auto flex items-center gap-1 px-4 py-2 ${tGlass} backdrop-blur-xl border ${tBorder} rounded-full shadow-2xl transition-colors duration-500`}>
-            {topNavItems.map((item) => (
-              <a 
-                key={item} 
-                href={`#${item.toLowerCase()}`}
-                onMouseMove={handleLiquidHover}
-                className={`liquid-btn relative px-5 py-3 text-[10px] md:text-xs font-black uppercase tracking-widest ${tMuted} hover:${tText} transition-colors duration-300 rounded-full ${item === 'Services' ? 'hidden md:block' : ''}`}
-              >
-                <span className="relative z-10">{item}</span>
-              </a>
-            ))}
-          </nav>
+          <div className="relative pointer-events-auto">
+            {/* Liquid Background Layer */}
+            <div 
+              className={`absolute inset-0 ${tGlass} backdrop-blur-xl border ${tBorder} rounded-full shadow-2xl transition-colors duration-500`} 
+              style={{ filter: 'url(#gooey)' }}
+            >
+              {hoveredTop && (
+                <motion.div
+                  layoutId="top-liquid"
+                  className={`absolute ${tWaterdrop} rounded-full z-0 blur-[2px]`}
+                  initial={false}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  style={{
+                    width: '70px', height: '100%',
+                    top: 0,
+                    left: topNavItems.indexOf(hoveredTop) * (window.innerWidth < 768 && hoveredTop === 'Services' ? 0 : 70) + 12
+                  }}
+                />
+              )}
+            </div>
+
+            <nav onMouseLeave={() => setHoveredTop(null)} className="relative z-10 flex items-center gap-1 px-4 py-2">
+              {topNavItems.map((item) => (
+                <a 
+                  key={item} 
+                  href={`#${item.toLowerCase()}`}
+                  onMouseEnter={() => setHoveredTop(item)}
+                  className={`relative px-5 py-3 w-[70px] text-center text-[10px] md:text-xs font-black uppercase tracking-widest ${hoveredTop === item ? tText : tMuted} transition-colors duration-300 ${item === 'Services' ? 'hidden md:block' : ''}`}
+                >
+                  <span className="relative z-10">{item}</span>
+                </a>
+              ))}
+            </nav>
+          </div>
         </motion.div>
 
         {/* 2. BOTTOM NAVBAR (ICON PILL) */}
@@ -159,38 +165,60 @@ export default function Portfolio() {
           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           className="fixed bottom-6 md:bottom-10 left-0 w-full flex justify-center z-50 pointer-events-none"
         >
-          <nav className={`flex items-center px-4 py-3 ${tGlass} backdrop-blur-xl border ${tBorder} rounded-full shadow-2xl pointer-events-auto transition-colors duration-500`}>
-            {bottomNavItems.map((item) => (
-              <a 
-                key={item.id} 
-                href={`#${item.id}`} 
-                onMouseMove={handleLiquidHover}
-                className={`liquid-btn rounded-full relative group px-5 py-4 ${tMuted} hover:${tText} transition-colors duration-300`}
-              >
-                <span className="relative z-10 block transition-transform group-active:scale-90 duration-300">
-                  <item.icon size={22} />
-                </span>
-                <span className="absolute -top-12 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#222] text-white text-[10px] uppercase tracking-widest rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-lg">
-                  {item.label}
-                </span>
-              </a>
-            ))}
-            
-            <div className={`w-[1px] h-6 ${isDark ? 'bg-white/20' : 'bg-black/20'} transition-colors duration-500 mx-2`}></div>
-            
-            <button 
-              onClick={() => setIsDark(!isDark)} 
-              onMouseMove={handleLiquidHover}
-              className={`liquid-btn rounded-full relative group px-5 py-4 ${tMuted} hover:${tText} transition-colors duration-300`}
+          <div className="relative pointer-events-auto">
+            <nav 
+              onMouseLeave={() => setHoveredBottom(null)}
+              className={`relative z-10 flex items-center px-4 py-3 ${tGlass} backdrop-blur-xl border ${tBorder} rounded-full shadow-2xl transition-colors duration-500`}
             >
-              <span className="relative z-10 block transition-transform group-active:scale-90 duration-300">
-                {isDark ? <Moon size={22} /> : <Sun size={22} />}
-              </span>
-              <span className="absolute -top-12 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#222] text-white text-[10px] uppercase tracking-widest rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-lg w-max">
-                Theme
-              </span>
-            </button>
-          </nav>
+              {bottomNavItems.map((item) => (
+                <a 
+                  key={item.id} 
+                  href={`#${item.id}`} 
+                  onMouseEnter={() => setHoveredBottom(item.id)}
+                  className={`relative group px-4 py-4 ${tMuted} hover:${tText} transition-colors duration-300`}
+                >
+                  {/* True Framer Motion Spring Waterdrop */}
+                  {hoveredBottom === item.id && (
+                    <motion.div
+                      layoutId="bottom-nav-waterdrop"
+                      className={`absolute inset-0 rounded-full ${tWaterdrop}`}
+                      initial={false}
+                      transition={{ type: "spring", stiffness: 350, damping: 25 }}
+                    />
+                  )}
+                  <span className="relative z-10 block transition-transform group-active:scale-90 duration-300">
+                    <item.icon size={22} />
+                  </span>
+                  <span className="absolute -top-12 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#222] text-white text-[10px] uppercase tracking-widest rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-lg">
+                    {item.label}
+                  </span>
+                </a>
+              ))}
+              
+              <div className={`w-[1px] h-6 ${isDark ? 'bg-white/20' : 'bg-black/20'} transition-colors duration-500 mx-2`}></div>
+              
+              <button 
+                onClick={() => setIsDark(!isDark)} 
+                onMouseEnter={() => setHoveredBottom('theme')}
+                className={`relative group px-4 py-4 ${tMuted} hover:${tText} transition-colors duration-300`}
+              >
+                {hoveredBottom === 'theme' && (
+                  <motion.div
+                    layoutId="bottom-nav-waterdrop"
+                    className={`absolute inset-0 rounded-full ${tWaterdrop}`}
+                    initial={false}
+                    transition={{ type: "spring", stiffness: 350, damping: 25 }}
+                  />
+                )}
+                <span className="relative z-10 block transition-transform group-active:scale-90 duration-300">
+                  {isDark ? <Moon size={22} /> : <Sun size={22} />}
+                </span>
+                <span className="absolute -top-12 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#222] text-white text-[10px] uppercase tracking-widest rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-lg w-max">
+                  Theme
+                </span>
+              </button>
+            </nav>
+          </div>
         </motion.div>
 
         {/* HERO SECTION */}
@@ -275,7 +303,7 @@ export default function Portfolio() {
           </motion.div>
         </section>
 
-        {/* FEATURED PROJECTS (WORK) WITH DP HOVER BACKGROUNDS */}
+        {/* FEATURED PROJECTS (WORK) - NOW WITH BRAND LOGOS (DPs) */}
         <section id="work" className={`p-6 md:p-12 border-t ${tBorder} grid lg:grid-cols-[1fr_3fr] gap-12 lg:gap-24 pt-24 pb-24 transition-colors duration-500`}>
           <div>
             <h2 className={`uppercase tracking-widest text-xs font-bold ${tMuted} lg:sticky top-32`}>Featured Pages</h2>
@@ -293,21 +321,23 @@ export default function Portfolio() {
                 key={index} 
                 className={`group relative ${tCard} border border-transparent ${tHoverBorder} hover:-translate-y-3 p-8 md:p-12 rounded-[2.5rem] flex flex-col justify-between min-h-[450px] transition-all duration-500 shadow-lg overflow-hidden`}
               >
-                {/* BACKGROUND BRAND IMAGE HOVER REVEAL */}
-                <div className="absolute inset-0 z-0">
-                  <div className={`absolute inset-0 ${isDark ? 'bg-black/90' : 'bg-white/90'} group-hover:${isDark ? 'bg-black/60' : 'bg-white/70'} transition-colors duration-500 z-10`}></div>
+                {/* DP / LOGO BACKGROUND HOVER EFFECT */}
+                <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                  {/* Subtle dark tint to make sure text is still readable over the logo */}
+                  <div className={`absolute inset-0 ${isDark ? 'bg-[#111]/80' : 'bg-white/85'} z-10 backdrop-blur-[2px]`}></div>
+                  {/* The actual brand logo scaled up */}
                   <img 
-                    src={page.image} 
+                    src={page.dp} 
                     alt={page.name}
-                    className="w-full h-full object-cover scale-110 opacity-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-700 ease-out grayscale group-hover:grayscale-0" 
+                    className="w-[70%] h-[70%] object-contain scale-110 group-hover:scale-100 transition-transform duration-700 ease-out grayscale group-hover:grayscale-0 opacity-20" 
                   />
                 </div>
 
                 {/* FOREGROUND CONTENT */}
                 <div className="mb-12 relative z-20">
                   <span className={`uppercase tracking-widest text-xs font-bold ${tMuted} block mb-8 group-hover:text-blue-500 transition-colors`}>{page.platforms}</span>
-                  <h3 className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-4 leading-[0.9] drop-shadow-md">{page.name}</h3>
-                  <p className={`${tMuted} text-lg leading-relaxed group-hover:${tText} drop-shadow-md transition-colors duration-300`}>{page.desc}</p>
+                  <h3 className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-4 leading-[0.9]">{page.name}</h3>
+                  <p className={`${tMuted} text-lg leading-relaxed group-hover:${tText} transition-colors duration-300`}>{page.desc}</p>
                 </div>
                 <div className="relative z-20">
                   <div className={`inline-flex items-center gap-3 px-6 py-3 ${tInvertBg} ${tInvertText} rounded-full font-bold uppercase tracking-widest text-xs group-hover:scale-105 transition-transform`}>
@@ -413,28 +443,32 @@ const managedPages =[
     link: "https://www.facebook.com/formula01nation",
     platforms: "Facebook",
     desc: "Strategic social media management and community building, driving audience engagement for motorsport enthusiasts.",
-    image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1470&auto=format&fit=crop" // High quality F1 placeholder
+    // Pulls the official F1 logo automatically
+    dp: "https://logo.clearbit.com/formula1.com"
   },
   {
     name: "JW Marketing Co",
     link: "https://www.linkedin.com/company/jwmarketingco/",
     platforms: "LinkedIn",
     desc: "B2B digital marketing strategy, lead generation, and professional corporate brand management.",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1515&auto=format&fit=crop" // High quality Corporate placeholder
+    // Pulls the official JW Marketing logo automatically
+    dp: "https://logo.clearbit.com/jwmarketingco.com"
   },
   {
     name: "Golf Essentials",
     link: "https://www.facebook.com/mygolfessentials",
     platforms: "Facebook • Instagram • X",
     desc: "Built an engaged golf community, significantly expanding audience reach over 1 year through targeted content and analytics.",
-    image: "https://images.unsplash.com/photo-1535136029863-4a3e36df2400?q=80&w=1470&auto=format&fit=crop" // High quality Golf placeholder
+    // Pulls the official Golf Essentials logo automatically
+    dp: "https://logo.clearbit.com/mygolfessentials.com"
   },
   {
     name: "Golf Shot US",
     link: "https://www.facebook.com/golfshotus",
     platforms: "Facebook",
     desc: "Developed strategic digital campaigns to boost brand visibility, customer engagement, and overall sales revenue.",
-    image: "https://images.unsplash.com/photo-1592916314815-568ea46580f4?q=80&w=1470&auto=format&fit=crop" // High quality Golf placeholder
+    // Pulls the official Golf Shot logo automatically
+    dp: "https://logo.clearbit.com/golfshot.com"
   }
 ];
 

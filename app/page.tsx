@@ -28,7 +28,7 @@ export default function Portfolio() {
   const [isScrollingDown, setIsScrollingDown] = useState(false);
   const { scrollY } = useScroll();
 
-  // iOS Fluid Hover States
+  // Hover States for the iOS Liquid Pill Effect
   const [hoveredTop, setHoveredTop] = useState<string | null>(null);
   const [hoveredBottom, setHoveredBottom] = useState<string | null>(null);
 
@@ -50,7 +50,7 @@ export default function Portfolio() {
     document.documentElement.style.scrollBehavior = "smooth";
   }, []);
 
-  // Theme Variables
+  // Theme Variables (Adjusted for perfect Light/Dark visibility)
   const tBg = isDark ? "bg-[#050505]" : "bg-[#f4f4f4]";
   const tText = isDark ? "text-[#ededed]" : "text-[#111111]";
   const tCard = isDark ? "bg-[#111111]" : "bg-white";
@@ -59,8 +59,10 @@ export default function Portfolio() {
   const tMuted = isDark ? "text-[#888888]" : "text-[#666666]";
   const tInvertBg = isDark ? "bg-white" : "bg-[#111111]";
   const tInvertText = isDark ? "text-black" : "text-white";
-  const tGlass = isDark ? "bg-white/5" : "bg-black/5";
-  const tWaterdrop = isDark ? "bg-white/20" : "bg-black/10"; 
+  
+  // Glass and Waterdrop colors fixed for extreme clarity in Light Mode
+  const tGlass = isDark ? "bg-white/5" : "bg-white/60";
+  const tWaterdrop = isDark ? "bg-white/15" : "bg-black/10"; 
 
   const containerVars = {
     hidden: { opacity: 0 },
@@ -89,19 +91,6 @@ export default function Portfolio() {
   return (
     <div className={`min-h-screen ${tBg} ${tText} font-sans selection:${tInvertBg} selection:${tInvertText} transition-colors duration-500 relative overflow-x-hidden`}>
       
-      {/* 
-        THE SECRET TO APPLE'S LIQUID EFFECT:
-        This invisible SVG creates a "Gooey" physics filter.
-        When applied to a container, it makes overlapping bubbles melt together like water drops! 
-      */}
-      <svg width="0" height="0" className="absolute hidden">
-        <filter id="gooey">
-          <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur" />
-          <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -10" result="gooey" />
-          <feComposite in="SourceGraphic" in2="gooey" operator="atop" />
-        </filter>
-      </svg>
-
       {/* BACKGROUND NOISE */}
       <div 
         className="fixed inset-0 pointer-events-none z-0 opacity-[0.04]" 
@@ -122,40 +111,30 @@ export default function Portfolio() {
           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           className="fixed top-6 w-full flex justify-center z-50 px-4 pointer-events-none"
         >
-          <div className="relative pointer-events-auto">
-            {/* Liquid Background Layer */}
-            <div 
-              className={`absolute inset-0 ${tGlass} backdrop-blur-xl border ${tBorder} rounded-full shadow-2xl transition-colors duration-500`} 
-              style={{ filter: 'url(#gooey)' }}
-            >
-              {hoveredTop && (
-                <motion.div
-                  layoutId="top-liquid"
-                  className={`absolute ${tWaterdrop} rounded-full z-0 blur-[2px]`}
-                  initial={false}
-                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                  style={{
-                    width: '70px', height: '100%',
-                    top: 0,
-                    left: topNavItems.indexOf(hoveredTop) * (window.innerWidth < 768 && hoveredTop === 'Services' ? 0 : 70) + 12
-                  }}
-                />
-              )}
-            </div>
-
-            <nav onMouseLeave={() => setHoveredTop(null)} className="relative z-10 flex items-center gap-1 px-4 py-2">
-              {topNavItems.map((item) => (
-                <a 
-                  key={item} 
-                  href={`#${item.toLowerCase()}`}
-                  onMouseEnter={() => setHoveredTop(item)}
-                  className={`relative px-5 py-3 w-[70px] text-center text-[10px] md:text-xs font-black uppercase tracking-widest ${hoveredTop === item ? tText : tMuted} transition-colors duration-300 ${item === 'Services' ? 'hidden md:block' : ''}`}
-                >
-                  <span className="relative z-10">{item}</span>
-                </a>
-              ))}
-            </nav>
-          </div>
+          <nav 
+            onMouseLeave={() => setHoveredTop(null)} 
+            className={`relative pointer-events-auto flex items-center gap-1 px-3 py-2 ${tGlass} backdrop-blur-xl border ${tBorder} rounded-full shadow-2xl transition-colors duration-500`}
+          >
+            {topNavItems.map((item) => (
+              <a 
+                key={item} 
+                href={`#${item.toLowerCase()}`}
+                onMouseEnter={() => setHoveredTop(item)}
+                className={`relative px-5 py-2.5 text-[10px] md:text-xs font-black uppercase tracking-widest ${hoveredTop === item ? tText : tMuted} transition-colors duration-300 rounded-full ${item === 'Services' ? 'hidden md:block' : ''}`}
+              >
+                {/* TRUE iOS FLUID HOVER BUBBLE */}
+                {hoveredTop === item && (
+                  <motion.div
+                    layoutId="top-nav-hover-pill"
+                    className={`absolute inset-0 rounded-full ${tWaterdrop}`}
+                    initial={false}
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                  />
+                )}
+                <span className="relative z-10">{item}</span>
+              </a>
+            ))}
+          </nav>
         </motion.div>
 
         {/* 2. BOTTOM NAVBAR (ICON PILL) */}
@@ -165,60 +144,59 @@ export default function Portfolio() {
           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           className="fixed bottom-6 md:bottom-10 left-0 w-full flex justify-center z-50 pointer-events-none"
         >
-          <div className="relative pointer-events-auto">
-            <nav 
-              onMouseLeave={() => setHoveredBottom(null)}
-              className={`relative z-10 flex items-center px-4 py-3 ${tGlass} backdrop-blur-xl border ${tBorder} rounded-full shadow-2xl transition-colors duration-500`}
-            >
-              {bottomNavItems.map((item) => (
-                <a 
-                  key={item.id} 
-                  href={`#${item.id}`} 
-                  onMouseEnter={() => setHoveredBottom(item.id)}
-                  className={`relative group px-4 py-4 ${tMuted} hover:${tText} transition-colors duration-300`}
-                >
-                  {/* True Framer Motion Spring Waterdrop */}
-                  {hoveredBottom === item.id && (
-                    <motion.div
-                      layoutId="bottom-nav-waterdrop"
-                      className={`absolute inset-0 rounded-full ${tWaterdrop}`}
-                      initial={false}
-                      transition={{ type: "spring", stiffness: 350, damping: 25 }}
-                    />
-                  )}
-                  <span className="relative z-10 block transition-transform group-active:scale-90 duration-300">
-                    <item.icon size={22} />
-                  </span>
-                  <span className="absolute -top-12 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#222] text-white text-[10px] uppercase tracking-widest rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-lg">
-                    {item.label}
-                  </span>
-                </a>
-              ))}
-              
-              <div className={`w-[1px] h-6 ${isDark ? 'bg-white/20' : 'bg-black/20'} transition-colors duration-500 mx-2`}></div>
-              
-              <button 
-                onClick={() => setIsDark(!isDark)} 
-                onMouseEnter={() => setHoveredBottom('theme')}
-                className={`relative group px-4 py-4 ${tMuted} hover:${tText} transition-colors duration-300`}
+          <nav 
+            onMouseLeave={() => setHoveredBottom(null)}
+            className={`relative pointer-events-auto flex items-center px-3 py-2 ${tGlass} backdrop-blur-xl border ${tBorder} rounded-full shadow-2xl transition-colors duration-500`}
+          >
+            {bottomNavItems.map((item) => (
+              <a 
+                key={item.id} 
+                href={`#${item.id}`} 
+                onMouseEnter={() => setHoveredBottom(item.id)}
+                className={`relative group px-4 py-3 ${tMuted} hover:${tText} transition-colors duration-300 rounded-full`}
               >
-                {hoveredBottom === 'theme' && (
+                {/* TRUE iOS FLUID HOVER BUBBLE */}
+                {hoveredBottom === item.id && (
                   <motion.div
-                    layoutId="bottom-nav-waterdrop"
+                    layoutId="bottom-nav-hover-pill"
                     className={`absolute inset-0 rounded-full ${tWaterdrop}`}
                     initial={false}
-                    transition={{ type: "spring", stiffness: 350, damping: 25 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
                   />
                 )}
                 <span className="relative z-10 block transition-transform group-active:scale-90 duration-300">
-                  {isDark ? <Moon size={22} /> : <Sun size={22} />}
+                  <item.icon size={22} />
                 </span>
-                <span className="absolute -top-12 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#222] text-white text-[10px] uppercase tracking-widest rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-lg w-max">
-                  Theme
+                <span className="absolute -top-12 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#222] text-white text-[10px] uppercase tracking-widest rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-lg">
+                  {item.label}
                 </span>
-              </button>
-            </nav>
-          </div>
+              </a>
+            ))}
+            
+            <div className={`w-[1px] h-6 ${isDark ? 'bg-white/20' : 'bg-black/20'} transition-colors duration-500 mx-2`}></div>
+            
+            {/* Dark Mode Toggle */}
+            <button 
+              onClick={() => setIsDark(!isDark)} 
+              onMouseEnter={() => setHoveredBottom('theme')}
+              className={`relative group px-4 py-3 ${tMuted} hover:${tText} transition-colors duration-300 rounded-full`}
+            >
+              {hoveredBottom === 'theme' && (
+                <motion.div
+                  layoutId="bottom-nav-hover-pill"
+                  className={`absolute inset-0 rounded-full ${tWaterdrop}`}
+                  initial={false}
+                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                />
+              )}
+              <span className="relative z-10 block transition-transform group-active:scale-90 duration-300">
+                {isDark ? <Moon size={22} /> : <Sun size={22} />}
+              </span>
+              <span className="absolute -top-12 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#222] text-white text-[10px] uppercase tracking-widest rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-lg w-max">
+                Theme
+              </span>
+            </button>
+          </nav>
         </motion.div>
 
         {/* HERO SECTION */}
@@ -303,7 +281,7 @@ export default function Portfolio() {
           </motion.div>
         </section>
 
-        {/* FEATURED PROJECTS (WORK) - NOW WITH BRAND LOGOS (DPs) */}
+        {/* FEATURED PROJECTS (WORK) - CLEAN TEXT CARDS */}
         <section id="work" className={`p-6 md:p-12 border-t ${tBorder} grid lg:grid-cols-[1fr_3fr] gap-12 lg:gap-24 pt-24 pb-24 transition-colors duration-500`}>
           <div>
             <h2 className={`uppercase tracking-widest text-xs font-bold ${tMuted} lg:sticky top-32`}>Featured Pages</h2>
@@ -321,19 +299,7 @@ export default function Portfolio() {
                 key={index} 
                 className={`group relative ${tCard} border border-transparent ${tHoverBorder} hover:-translate-y-3 p-8 md:p-12 rounded-[2.5rem] flex flex-col justify-between min-h-[450px] transition-all duration-500 shadow-lg overflow-hidden`}
               >
-                {/* DP / LOGO BACKGROUND HOVER EFFECT */}
-                <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                  {/* Subtle dark tint to make sure text is still readable over the logo */}
-                  <div className={`absolute inset-0 ${isDark ? 'bg-[#111]/80' : 'bg-white/85'} z-10 backdrop-blur-[2px]`}></div>
-                  {/* The actual brand logo scaled up */}
-                  <img 
-                    src={page.dp} 
-                    alt={page.name}
-                    className="w-[70%] h-[70%] object-contain scale-110 group-hover:scale-100 transition-transform duration-700 ease-out grayscale group-hover:grayscale-0 opacity-20" 
-                  />
-                </div>
-
-                {/* FOREGROUND CONTENT */}
+                {/* FOREGROUND CONTENT (No background images) */}
                 <div className="mb-12 relative z-20">
                   <span className={`uppercase tracking-widest text-xs font-bold ${tMuted} block mb-8 group-hover:text-blue-500 transition-colors`}>{page.platforms}</span>
                   <h3 className="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-4 leading-[0.9]">{page.name}</h3>
@@ -411,7 +377,6 @@ export default function Portfolio() {
           <div className={`flex flex-col md:flex-row justify-between items-start md:items-center text-xs font-bold uppercase tracking-widest ${tMuted} border-t ${tBorder} pt-8 gap-6`}>
             <p>© {new Date().getFullYear()} Nigunthan Prignaselvam. All rights reserved.</p>
             
-            {/* SOCIAL LOGOS WITH BRAND COLOR HOVER */}
             <div className="flex gap-4">
               <Link href="https://www.linkedin.com/in/nigunthan/" target="_blank" className={`group p-4 ${tCard} rounded-full hover:bg-white transition-all hover:-translate-y-1 hover:shadow-lg`}>
                 <LinkedinIcon className={`text-[#888] group-hover:text-[#0077b5] transition-colors duration-300`} size={20} />
@@ -442,33 +407,25 @@ const managedPages =[
     name: "Formula 01 Nation",
     link: "https://www.facebook.com/formula01nation",
     platforms: "Facebook",
-    desc: "Strategic social media management and community building, driving audience engagement for motorsport enthusiasts.",
-    // Pulls the official F1 logo automatically
-    dp: "https://logo.clearbit.com/formula1.com"
+    desc: "Strategic social media management and community building, driving audience engagement for motorsport enthusiasts."
   },
   {
     name: "JW Marketing Co",
     link: "https://www.linkedin.com/company/jwmarketingco/",
     platforms: "LinkedIn",
-    desc: "B2B digital marketing strategy, lead generation, and professional corporate brand management.",
-    // Pulls the official JW Marketing logo automatically
-    dp: "https://logo.clearbit.com/jwmarketingco.com"
+    desc: "B2B digital marketing strategy, lead generation, and professional corporate brand management."
   },
   {
     name: "Golf Essentials",
     link: "https://www.facebook.com/mygolfessentials",
     platforms: "Facebook • Instagram • X",
-    desc: "Built an engaged golf community, significantly expanding audience reach over 1 year through targeted content and analytics.",
-    // Pulls the official Golf Essentials logo automatically
-    dp: "https://logo.clearbit.com/mygolfessentials.com"
+    desc: "Built an engaged golf community, significantly expanding audience reach over 1 year through targeted content and analytics."
   },
   {
     name: "Golf Shot US",
     link: "https://www.facebook.com/golfshotus",
     platforms: "Facebook",
-    desc: "Developed strategic digital campaigns to boost brand visibility, customer engagement, and overall sales revenue.",
-    // Pulls the official Golf Shot logo automatically
-    dp: "https://logo.clearbit.com/golfshot.com"
+    desc: "Developed strategic digital campaigns to boost brand visibility, customer engagement, and overall sales revenue."
   }
 ];
 

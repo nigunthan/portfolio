@@ -19,18 +19,31 @@ const FacebookIcon = ({ size = 24 }: { size?: number }) => (
 export default function Portfolio() {
   const [isDark, setIsDark] = useState(true);
   const [mounted, setMounted] = useState(false);
-  const [navHidden, setNavHidden] = useState(false);
+  
+  // Navigation State Logic
+  const [isAtTop, setIsAtTop] = useState(true);
+  const [isScrollingDown, setIsScrollingDown] = useState(false);
   const { scrollY } = useScroll();
 
-  // Scroll detection to auto-hide navbars
+  // iOS Fluid Hover States
+  const [hoveredTop, setHoveredTop] = useState<string | null>(null);
+  const [hoveredBottom, setHoveredBottom] = useState<string | null>(null);
+
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious() || 0;
-    if (latest > previous && latest > 150) {
-      setNavHidden(true); // Scrolling down
-    } else {
-      setNavHidden(false); // Scrolling up
+    
+    setIsAtTop(latest <= 50); // Check if we are at the very top (Home)
+    
+    if (latest > previous && latest > 50) {
+      setIsScrollingDown(true); // User is scrolling down
+    } else if (latest < previous) {
+      setIsScrollingDown(false); // User is scrolling up
     }
   });
+
+  // Calculate exactly which nav should show based on your rules
+  const showTopNav = isAtTop || !isScrollingDown;
+  const showBottomNav = !isAtTop && isScrollingDown;
 
   useEffect(() => {
     setMounted(true);
@@ -46,9 +59,8 @@ export default function Portfolio() {
   const tInvertBg = isDark ? "bg-white" : "bg-[#111111]";
   const tInvertText = isDark ? "text-black" : "text-white";
   const tGlass = isDark ? "bg-white/5" : "bg-black/5";
-  const tWaterdrop = isDark ? "bg-white/10" : "bg-black/10"; // Hover effect color
+  const tWaterdrop = isDark ? "bg-white/15" : "bg-black/10";
 
-  // Font Animation Variants
   const containerVars = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
@@ -62,12 +74,21 @@ export default function Portfolio() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
   };
 
-  if (!mounted) return null; // Prevents hydration mismatch
+  const topNavItems = ['About', 'Work', 'CV', 'Services', 'Contact'];
+  const bottomNavItems = [
+    { id: 'about', icon: User, label: 'About' },
+    { id: 'skills', icon: Sparkles, label: 'Services' },
+    { id: 'cv', icon: FileText, label: 'CV' },
+    { id: 'work', icon: Shapes, label: 'Work' },
+    { id: 'contact', icon: Send, label: 'Contact' },
+  ];
+
+  if (!mounted) return null;
 
   return (
     <div className={`min-h-screen ${tBg} ${tText} font-sans selection:${tInvertBg} selection:${tInvertText} transition-colors duration-500 relative overflow-x-hidden`}>
       
-      {/* PREMIUM CSS NOISE BACKGROUND */}
+      {/* BACKGROUND NOISE */}
       <div 
         className="fixed inset-0 pointer-events-none z-0 opacity-[0.04]" 
         style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}
@@ -80,48 +101,70 @@ export default function Portfolio() {
 
       <div className="relative z-10">
         
-        {/* 1. TOP NAVBAR (TEXT PILL WITH AUTO-HIDE) */}
+        {/* 1. TOP NAVBAR (TEXT PILL) */}
         <motion.div 
-          animate={navHidden ? { y: "-150%", opacity: 0 } : { y: 0, opacity: 1 }}
-          transition={{ duration: 0.4, ease: "easeInOut" }}
+          initial={false}
+          animate={showTopNav ? { y: 0, opacity: 1 } : { y: "-150%", opacity: 0 }}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           className="fixed top-6 w-full flex justify-center z-50 px-4 pointer-events-none"
         >
-          <nav className={`pointer-events-auto flex items-center gap-2 md:gap-4 px-4 md:px-6 py-3 ${tGlass} backdrop-blur-xl border ${tBorder} rounded-full shadow-2xl transition-colors duration-500`}>
-            {['About', 'Work', 'CV', 'Services', 'Contact'].map((item) => (
+          <nav 
+            onMouseLeave={() => setHoveredTop(null)}
+            className={`pointer-events-auto flex items-center gap-1 px-4 py-2 ${tGlass} backdrop-blur-xl border ${tBorder} rounded-full shadow-2xl transition-colors duration-500`}
+          >
+            {topNavItems.map((item) => (
               <a 
                 key={item} 
-                href={`#${item.toLowerCase()}`} 
-                className={`relative group px-4 py-2 text-[10px] md:text-xs font-black uppercase tracking-widest ${tMuted} hover:${tText} transition-colors ${item === 'Services' ? 'hidden md:block' : ''}`}
+                href={`#${item.toLowerCase()}`}
+                onMouseEnter={() => setHoveredTop(item)}
+                className={`relative px-4 py-3 text-[10px] md:text-xs font-black uppercase tracking-widest ${tMuted} hover:${tText} transition-colors ${item === 'Services' ? 'hidden md:block' : ''}`}
               >
+                {/* iOS FLUID BACKGROUND MORPH */}
+                {hoveredTop === item && (
+                  <motion.div
+                    layoutId="top-nav-hover"
+                    className={`absolute inset-0 rounded-full ${tWaterdrop}`}
+                    initial={false}
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
                 <span className="relative z-10">{item}</span>
-                {/* WATERDROP EXPANDING HOVER EFFECT */}
-                <span className={`absolute inset-0 ${tWaterdrop} rounded-full scale-50 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300 ease-out`}></span>
               </a>
             ))}
           </nav>
         </motion.div>
 
-        {/* 2. BOTTOM NAVBAR (ICON PILL WITH AUTO-HIDE & DARK MODE) */}
+        {/* 2. BOTTOM NAVBAR (ICON PILL) */}
         <motion.div 
-          animate={navHidden ? { y: "150%", opacity: 0 } : { y: 0, opacity: 1 }}
-          transition={{ duration: 0.4, ease: "easeInOut" }}
+          initial={{ y: "150%", opacity: 0 }}
+          animate={showBottomNav ? { y: 0, opacity: 1 } : { y: "150%", opacity: 0 }}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           className="fixed bottom-6 md:bottom-10 left-0 w-full flex justify-center z-50 pointer-events-none"
         >
-          <nav className={`flex items-center gap-2 md:gap-4 px-4 py-3 ${tGlass} backdrop-blur-xl border ${tBorder} rounded-full shadow-2xl pointer-events-auto transition-colors duration-500`}>
+          <nav 
+            onMouseLeave={() => setHoveredBottom(null)}
+            className={`flex items-center px-4 py-3 ${tGlass} backdrop-blur-xl border ${tBorder} rounded-full shadow-2xl pointer-events-auto transition-colors duration-500`}
+          >
             
-            {[
-              { id: 'about', icon: User, label: 'About' },
-              { id: 'skills', icon: Sparkles, label: 'Services' },
-              { id: 'cv', icon: FileText, label: 'CV' },
-              { id: 'work', icon: Shapes, label: 'Work' },
-              { id: 'contact', icon: Send, label: 'Contact' },
-            ].map((item) => (
-              <a key={item.id} href={`#${item.id}`} className={`relative group px-3 py-3 ${tMuted} hover:${tText} transition-colors`}>
-                <span className="relative z-10 block transition-transform group-hover:scale-110 duration-300">
+            {bottomNavItems.map((item) => (
+              <a 
+                key={item.id} 
+                href={`#${item.id}`} 
+                onMouseEnter={() => setHoveredBottom(item.id)}
+                className={`relative group px-4 py-4 ${tMuted} hover:${tText} transition-colors`}
+              >
+                {/* iOS FLUID BACKGROUND MORPH */}
+                {hoveredBottom === item.id && (
+                  <motion.div
+                    layoutId="bottom-nav-hover"
+                    className={`absolute inset-0 rounded-full ${tWaterdrop}`}
+                    initial={false}
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
+                <span className="relative z-10 block transition-transform group-active:scale-90 duration-300">
                   <item.icon size={22} />
                 </span>
-                {/* WATERDROP EXPANDING HOVER EFFECT */}
-                <span className={`absolute inset-0 ${tWaterdrop} rounded-full scale-50 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300 ease-out`}></span>
                 {/* TOOLTIP */}
                 <span className="absolute -top-12 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#222] text-white text-[10px] uppercase tracking-widest rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-lg">
                   {item.label}
@@ -129,15 +172,24 @@ export default function Portfolio() {
               </a>
             ))}
             
-            {/* The vertical divider line */}
-            <div className={`w-[1px] h-6 ${isDark ? 'bg-white/20' : 'bg-black/20'} transition-colors duration-500 mx-1`}></div>
+            <div className={`w-[1px] h-6 ${isDark ? 'bg-white/20' : 'bg-black/20'} transition-colors duration-500 mx-2`}></div>
             
-            {/* Dark Mode Toggle with Waterdrop Hover */}
-            <button onClick={() => setIsDark(!isDark)} className={`relative group px-3 py-3 ${tMuted} hover:${tText} transition-colors`}>
-              <span className="relative z-10 block transition-transform group-hover:scale-110 group-active:scale-90 duration-300">
+            <button 
+              onClick={() => setIsDark(!isDark)} 
+              onMouseEnter={() => setHoveredBottom('theme')}
+              className={`relative group px-4 py-4 ${tMuted} hover:${tText} transition-colors`}
+            >
+              {hoveredBottom === 'theme' && (
+                <motion.div
+                  layoutId="bottom-nav-hover"
+                  className={`absolute inset-0 rounded-full ${tWaterdrop}`}
+                  initial={false}
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                />
+              )}
+              <span className="relative z-10 block transition-transform group-active:scale-90 duration-300">
                 {isDark ? <Moon size={22} /> : <Sun size={22} />}
               </span>
-              <span className={`absolute inset-0 ${tWaterdrop} rounded-full scale-50 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300 ease-out`}></span>
               <span className="absolute -top-12 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#222] text-white text-[10px] uppercase tracking-widest rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-lg w-max">
                 Theme
               </span>
@@ -145,7 +197,7 @@ export default function Portfolio() {
           </nav>
         </motion.div>
 
-        {/* HERO SECTION WITH FONT ANIMATIONS */}
+        {/* HERO SECTION */}
         <section className="min-h-screen flex flex-col justify-end p-6 md:p-12 pb-32">
           <motion.div initial="hidden" animate="visible" variants={containerVars}>
             <motion.p variants={wordVars} className={`max-w-2xl text-xl md:text-2xl ${tMuted} mb-8 leading-snug`}>
@@ -227,7 +279,7 @@ export default function Portfolio() {
           </motion.div>
         </section>
 
-        {/* FEATURED PROJECTS (WORK) - NOW WITH 4 PROJECTS */}
+        {/* FEATURED PROJECTS (WORK) */}
         <section id="work" className={`p-6 md:p-12 border-t ${tBorder} grid lg:grid-cols-[1fr_3fr] gap-12 lg:gap-24 pt-24 pb-24 transition-colors duration-500`}>
           <div>
             <h2 className={`uppercase tracking-widest text-xs font-bold ${tMuted} lg:sticky top-32`}>Featured Pages</h2>

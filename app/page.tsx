@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowUpRight, Mail, User, Sparkles, FileText, Shapes, Send, MapPin, ChevronRight, Download } from "lucide-react";
+import { ArrowUpRight, Mail, Sparkles, Download } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 
@@ -95,7 +95,7 @@ export default function Portfolio() {
             </motion.h1>
 
             <motion.p variants={fadeIn} className="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl leading-relaxed">
-              Hi, I'm <span className="text-white font-medium">Nigunthan Prignaselvam</span>. I combine strategic thinking with hands-on expertise to align marketing efforts with business goals, driving explosive sales and brand visibility.
+              Hi, I&apos;m <span className="text-white font-medium">Nigunthan Prignaselvam</span>. I combine strategic thinking with hands-on expertise to align marketing efforts with business goals, driving explosive sales and brand visibility.
             </motion.p>
             
             <motion.div variants={fadeIn} className="flex flex-wrap justify-center gap-4">
@@ -103,7 +103,7 @@ export default function Portfolio() {
               <a href="#contact" className="relative inline-flex h-14 overflow-hidden rounded-full p-[1px] focus:outline-none active:scale-95 transition-transform">
                 <span className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
                 <span className="inline-flex h-full w-full items-center justify-center rounded-full bg-[#030014] px-8 py-2 text-sm font-semibold uppercase tracking-wider text-white backdrop-blur-3xl gap-2 hover:bg-transparent transition-colors duration-300">
-                  Let's Connect <ArrowUpRight size={18} />
+                  Let&apos;s Connect <ArrowUpRight size={18} />
                 </span>
               </a>
 
@@ -252,9 +252,9 @@ export default function Portfolio() {
         {/* FOOTER & CONTACT */}
         <footer id="contact" className="border-t border-white/10 mt-20 pt-20 pb-12 bg-white/[0.02]">
           <div className="max-w-4xl mx-auto px-6 text-center">
-            <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">Let's build together.</h2>
+            <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">Let&apos;s build together.</h2>
             <p className="text-gray-400 text-lg mb-10 max-w-2xl mx-auto">
-              Ready to elevate your brand's digital presence and drive real revenue? Drop me a message and let's get started.
+              Ready to elevate your brand&apos;s digital presence and drive real revenue? Drop me a message and let&apos;s get started.
             </p>
             
             <a href="mailto:nigunthanprignaselvam@gmail.com" className="inline-flex items-center gap-3 px-8 py-4 bg-white text-black rounded-full font-bold text-sm hover:scale-105 hover:bg-cyan-400 transition-all duration-300">

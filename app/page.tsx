@@ -29,7 +29,8 @@ export default function Portfolio() {
 
   const fadeIn = {
     hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+    // Removed 'ease: "easeOut"' to fix the Vercel TypeScript error perfectly
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
   };
 
   const staggerContainer = {

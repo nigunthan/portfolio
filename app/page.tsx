@@ -29,7 +29,6 @@ export default function Portfolio() {
 
   const fadeIn = {
     hidden: { opacity: 0, y: 30 },
-    // Removed 'ease: "easeOut"' to fix the Vercel TypeScript error perfectly
     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
   };
 
@@ -138,12 +137,13 @@ export default function Portfolio() {
               <p className="text-sm uppercase tracking-widest text-gray-300 font-medium">Revenue Growth Generated</p>
             </motion.div>
 
-            {/* Photo / DP Card */}
-            <motion.div variants={fadeIn} className="bg-white/[0.03] border border-white/10 rounded-[2rem] overflow-hidden aspect-square md:aspect-auto md:h-full relative group">
+            {/* Photo / DP Card (FIXED CROP ISSUE) */}
+            <motion.div variants={fadeIn} className="bg-white/[0.03] border border-white/10 rounded-[2rem] overflow-hidden min-h-[300px] md:h-full relative group">
               <img 
                 src="/profile.jpg" 
                 alt="Nigunthan Prignaselvam" 
-                className="absolute inset-0 w-full h-full object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                // Added "object-top" to anchor the image so your head isn't chopped off!
+                className="absolute inset-0 w-full h-full object-cover object-top grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
                 onError={(e) => { e.currentTarget.style.display = 'none'; }}
               />
             </motion.div>

@@ -1,11 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowUpRight, Mail, Sparkles, Download } from "lucide-react";
+import { ArrowUpRight, Mail, Download, MapPin } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 
-// Custom SVG Social Icons
+// Custom Brand Icons
 const GithubIcon = ({ className = "", size = 24 }: { className?: string, size?: number }) => (
   <svg className={className} xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.02c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A4.8 4.8 0 0 0 9 18v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
 );
@@ -27,9 +27,11 @@ export default function Portfolio() {
     document.documentElement.style.scrollBehavior = "smooth";
   }, []);
 
-  const fadeIn = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  if (!mounted) return null;
+
+  const fadeUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
   };
 
   const staggerContainer = {
@@ -37,144 +39,111 @@ export default function Portfolio() {
     visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
   };
 
-  if (!mounted) return null;
-
   return (
-    <div className="min-h-screen bg-[#030014] text-gray-200 font-sans selection:bg-cyan-500/30 selection:text-cyan-200 relative overflow-x-hidden">
+    <div className="min-h-screen bg-[#000000] text-zinc-300 font-sans selection:bg-zinc-800 selection:text-white relative overflow-x-hidden">
       
-      {/* VERCEL-STYLE BACKGROUND (Dot Matrix & Glowing Orbs) */}
-      <div className="fixed inset-0 z-0 pointer-events-none flex items-center justify-center">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
-        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-purple-600/20 blur-[120px]"></div>
-        <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-cyan-600/20 blur-[120px]"></div>
+      {/* VERCEL DOT MATRIX BACKGROUND */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+        <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-zinc-500 opacity-20 blur-[100px]"></div>
       </div>
-
-      <style dangerouslySetInnerHTML={{__html: `
-        @keyframes scroll {
-          to { transform: translate(calc(-50% - 0.5rem)); }
-        }
-        .animate-scroll {
-          animation: scroll 20s linear infinite;
-        }
-      `}} />
 
       <div className="relative z-10">
         
-        {/* FLOATING GLASS NAVBAR */}
-        <div className="fixed top-6 w-full flex justify-center z-50 px-4">
-          <nav className="flex items-center gap-1 md:gap-2 px-2 py-2 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full shadow-2xl">
-            {['About', 'Work', 'CV', 'Contact'].map((item) => (
-              <a 
-                key={item} 
-                href={`#${item.toLowerCase()}`}
-                className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-400 hover:text-white hover:bg-white/10 rounded-full transition-all duration-300"
-              >
-                {item}
-              </a>
-            ))}
-          </nav>
-        </div>
+        {/* FROSTED GLASS NAVBAR */}
+        <motion.nav 
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-4 md:gap-8 px-6 py-3 bg-zinc-900/50 backdrop-blur-xl border border-zinc-800/50 rounded-full text-xs md:text-sm font-medium text-zinc-400 shadow-2xl"
+        >
+          {['About', 'Work', 'Experience', 'Contact'].map((item) => (
+            <a 
+              key={item} 
+              href={`#${item.toLowerCase()}`}
+              className="hover:text-white transition-colors"
+            >
+              {item}
+            </a>
+          ))}
+        </motion.nav>
 
         {/* HERO SECTION */}
-        <section className="min-h-screen flex flex-col items-center justify-center p-6 md:p-12 text-center pt-32">
+        <section className="pt-40 pb-20 md:pt-52 md:pb-32 px-6 flex flex-col items-center justify-center text-center">
           <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="max-w-4xl flex flex-col items-center">
             
-            <motion.div variants={fadeIn} className="flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-8">
+            <motion.div variants={fadeUp} className="flex items-center gap-2 px-3 py-1 rounded-full border border-zinc-800 bg-zinc-900/30 text-xs text-zinc-400 mb-8 backdrop-blur-sm">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
-              <span className="text-xs font-medium text-gray-300 tracking-wide">Based in Sri Lanka</span>
+              Based in Sri Lanka
             </motion.div>
 
-            <motion.h1 variants={fadeIn} className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white mb-6">
-              Digital Marketer <br className="hidden md:block" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-600">
-                & Sales Strategist
-              </span>
+            <motion.h1 variants={fadeUp} className="text-5xl md:text-7xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-500 mb-6 leading-tight">
+              Social Media Manager <br className="hidden md:block" />
+              & Sales Consultant
             </motion.h1>
 
-            <motion.p variants={fadeIn} className="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl leading-relaxed">
-              Hi, I&apos;m <span className="text-white font-medium">Nigunthan Prignaselvam</span>. I combine strategic thinking with hands-on expertise to align marketing efforts with business goals, driving explosive sales and brand visibility.
+            <motion.p variants={fadeUp} className="text-base md:text-xl text-zinc-400 mb-10 max-w-2xl leading-relaxed">
+              Hi, I&apos;m <span className="text-zinc-200 font-medium">Nigunthan Prignaselvam</span>. I build powerful digital strategies that turn interactions into loyal communities and drive measurable revenue growth.
             </motion.p>
             
-            <motion.div variants={fadeIn} className="flex flex-wrap justify-center gap-4">
-              {/* SPINNING GRADIENT BORDER BUTTON (Vercel Style) */}
-              <a href="#contact" className="relative inline-flex h-14 overflow-hidden rounded-full p-[1px] focus:outline-none active:scale-95 transition-transform">
-                <span className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
-                <span className="inline-flex h-full w-full items-center justify-center rounded-full bg-[#030014] px-8 py-2 text-sm font-semibold uppercase tracking-wider text-white backdrop-blur-3xl gap-2 hover:bg-transparent transition-colors duration-300">
-                  Let&apos;s Connect <ArrowUpRight size={18} />
-                </span>
+            <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-4">
+              <a href="#contact" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-black rounded-full font-medium text-sm hover:bg-zinc-200 transition-colors">
+                Get in touch <ArrowUpRight size={16} />
               </a>
-
-              <a href="/resume.pdf" download className="inline-flex h-14 items-center justify-center rounded-full border border-white/10 bg-white/5 px-8 py-2 text-sm font-semibold uppercase tracking-wider text-white backdrop-blur-3xl gap-2 hover:bg-white/10 transition-all active:scale-95">
-                Download CV <Download size={18} />
+              <a href="/resume.pdf" download className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-zinc-900 border border-zinc-800 text-white rounded-full font-medium text-sm hover:bg-zinc-800 transition-colors">
+                Download CV <Download size={16} />
               </a>
             </motion.div>
           </motion.div>
         </section>
 
-        {/* BENTO GRID (ABOUT & STATS) */}
-        <section id="about" className="p-6 md:p-12 max-w-7xl mx-auto">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer} className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+        {/* ABOUT (BENTO GRID) */}
+        <section id="about" className="py-20 px-6 max-w-5xl mx-auto">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={staggerContainer} className="grid grid-cols-1 md:grid-cols-3 gap-4">
             
-            {/* Main About Card */}
-            <motion.div variants={fadeIn} className="col-span-1 md:col-span-2 bg-white/[0.03] border border-white/10 p-8 md:p-12 rounded-[2rem] relative overflow-hidden group">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-[80px] -mr-32 -mt-32 transition-opacity duration-500 opacity-50 group-hover:opacity-100"></div>
-              <h2 className="text-sm font-semibold uppercase tracking-widest text-cyan-400 mb-4">Who Am I</h2>
-              <h3 className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight">
-                Turning digital interactions into living communities.
+            {/* Bio Card */}
+            <motion.div variants={fadeUp} className="md:col-span-2 bg-zinc-900/30 border border-zinc-800/50 p-8 md:p-10 rounded-3xl hover:border-zinc-700/50 transition-colors">
+              <h2 className="text-zinc-500 text-sm font-medium mb-4">About Me</h2>
+              <h3 className="text-2xl md:text-3xl font-bold text-zinc-100 mb-4 leading-snug">
+                Driving growth through strategic marketing.
               </h3>
-              <p className="text-gray-400 text-lg leading-relaxed">
-                With over 3 years of experience, I specialize in developing digital strategies that boost brand visibility, customer engagement, and revenue growth. Whether driving community growth or executing innovative sales strategies, I treat every campaign as an opportunity to deliver measurable results.
+              <p className="text-zinc-400 leading-relaxed">
+                With over 3 years of experience, I specialize in developing digital strategies that boost brand visibility and customer engagement. Whether I am driving community growth or executing innovative B2B sales strategies, I treat every campaign as an opportunity to deliver real, measurable results.
               </p>
             </motion.div>
 
-            {/* Stat Card 1 */}
-            <motion.div variants={fadeIn} className="bg-gradient-to-br from-purple-900/40 to-cyan-900/40 border border-white/10 p-8 md:p-10 rounded-[2rem] flex flex-col justify-center relative overflow-hidden group hover:border-white/20 transition-colors">
-              <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <h4 className="text-6xl md:text-7xl font-black text-white mb-2">30%</h4>
-              <p className="text-sm uppercase tracking-widest text-gray-300 font-medium">Revenue Growth Generated</p>
+            {/* Stat Card */}
+            <motion.div variants={fadeUp} className="bg-zinc-900/30 border border-zinc-800/50 p-8 md:p-10 rounded-3xl flex flex-col items-center justify-center text-center hover:border-zinc-700/50 transition-colors">
+              <div className="text-5xl md:text-6xl font-bold text-white mb-2 tracking-tight">30%</div>
+              <div className="text-zinc-500 text-sm font-medium">Revenue Growth Generated</div>
             </motion.div>
 
-            {/* Photo / DP Card (FIXED CROP ISSUE) */}
-            <motion.div variants={fadeIn} className="bg-white/[0.03] border border-white/10 rounded-[2rem] overflow-hidden min-h-[300px] md:h-full relative group">
-              <img 
-                src="/profile.jpg" 
-                alt="Nigunthan Prignaselvam" 
-                // Added "object-top" to anchor the image so your head isn't chopped off!
-                className="absolute inset-0 w-full h-full object-cover object-top grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
-                onError={(e) => { e.currentTarget.style.display = 'none'; }}
-              />
-            </motion.div>
-
-            {/* Infinite Scroll Skills Card */}
-            <motion.div variants={fadeIn} className="col-span-1 md:col-span-2 bg-white/[0.03] border border-white/10 p-8 rounded-[2rem] flex flex-col justify-center overflow-hidden relative">
-              <h2 className="text-sm font-semibold uppercase tracking-widest text-purple-400 mb-6">Technical Arsenal</h2>
-              
-              <div className="relative flex overflow-hidden w-full mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-                <div className="flex w-max animate-scroll hover:[animation-play-state:paused] gap-4">
-                  {[...skills, ...skills, ...skills].map((skill, index) => (
-                    <div key={index} className="flex items-center gap-2 px-5 py-3 bg-white/5 border border-white/10 rounded-full shrink-0">
-                      <Sparkles size={14} className="text-cyan-400" />
-                      <span className="text-sm font-medium text-gray-200">{skill}</span>
-                    </div>
-                  ))}
-                </div>
+            {/* Skills Card */}
+            <motion.div variants={fadeUp} className="md:col-span-3 bg-zinc-900/30 border border-zinc-800/50 p-8 md:p-10 rounded-3xl hover:border-zinc-700/50 transition-colors">
+              <h2 className="text-zinc-500 text-sm font-medium mb-6">Core Competencies</h2>
+              <div className="flex flex-wrap gap-3">
+                {skills.map((skill, i) => (
+                  <span key={i} className="px-4 py-2 bg-zinc-800/30 border border-zinc-800 rounded-full text-xs md:text-sm text-zinc-300">
+                    {skill}
+                  </span>
+                ))}
               </div>
             </motion.div>
 
           </motion.div>
         </section>
 
-        {/* FEATURED WORK / PROJECTS */}
-        <section id="work" className="p-6 md:p-12 max-w-7xl mx-auto pt-20">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn} className="mb-12">
-            <h2 className="text-3xl md:text-5xl font-bold text-white">Featured Projects</h2>
-            <p className="text-gray-400 mt-4 text-lg">Digital spaces and campaigns I have managed and grown.</p>
+        {/* PROJECTS */}
+        <section id="work" className="py-20 px-6 max-w-5xl mx-auto">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeUp} className="mb-12">
+            <h2 className="text-3xl font-bold text-zinc-100">Featured Pages</h2>
+            <p className="text-zinc-500 mt-2">Digital spaces I have scaled and managed.</p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-4">
             {managedPages.map((page, index) => (
               <motion.a 
                 href={page.link} 
@@ -183,94 +152,94 @@ export default function Portfolio() {
                 initial="hidden" 
                 whileInView="visible" 
                 viewport={{ once: true }} 
-                variants={fadeIn} 
+                variants={fadeUp} 
                 key={index} 
-                className="group relative bg-white/[0.03] border border-white/10 p-8 md:p-10 rounded-[2rem] flex flex-col justify-between min-h-[350px] transition-all duration-500 hover:bg-white/[0.05] hover:border-white/20 overflow-hidden"
+                className="group bg-zinc-900/30 border border-zinc-800/50 p-8 rounded-3xl hover:bg-zinc-900/50 hover:border-zinc-700/50 transition-all flex flex-col justify-between min-h-[250px]"
               >
-                {/* Subtle Hover Glow */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] bg-cyan-500/20 rounded-full blur-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
-
-                <div className="relative z-20">
+                <div>
                   <div className="flex justify-between items-start mb-6">
-                    <span className="px-3 py-1 bg-white/10 border border-white/10 rounded-full text-xs font-semibold text-cyan-300 uppercase tracking-widest">{page.platforms}</span>
-                    <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white group-hover:bg-white group-hover:text-black transition-colors duration-300">
-                      <ArrowUpRight size={18} strokeWidth={2.5} />
-                    </div>
+                    <span className="text-xs font-medium text-zinc-500 px-3 py-1 bg-zinc-800/50 rounded-full">{page.platforms}</span>
+                    <ArrowUpRight size={18} className="text-zinc-500 group-hover:text-white transition-colors" />
                   </div>
-                  <h3 className="text-3xl md:text-4xl font-bold text-white mb-4 leading-tight">{page.name}</h3>
-                  <p className="text-gray-400 text-base md:text-lg leading-relaxed">{page.desc}</p>
+                  <h3 className="text-2xl font-bold text-zinc-100 mb-3">{page.name}</h3>
+                  <p className="text-zinc-400 text-sm leading-relaxed">{page.desc}</p>
                 </div>
               </motion.a>
             ))}
           </div>
         </section>
 
-        {/* EXPERIENCE TIMELINE (Vercel Style) */}
-        <section id="cv" className="p-6 md:p-12 max-w-4xl mx-auto pt-20">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn} className="mb-16 text-center">
-            <h2 className="text-3xl md:text-5xl font-bold text-white">Professional Journey</h2>
+        {/* EXPERIENCE & EDUCATION (VERCEL TIMELINE) */}
+        <section id="experience" className="py-20 px-6 max-w-3xl mx-auto">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="mb-12">
+            <h2 className="text-3xl font-bold text-zinc-100">Experience</h2>
           </motion.div>
 
-          <div className="relative border-l border-white/10 ml-3 md:ml-6 space-y-12">
+          <div className="space-y-12">
             {experiences.map((exp, index) => (
               <motion.div 
                 initial="hidden" 
                 whileInView="visible" 
                 viewport={{ once: true, margin: "-50px" }} 
-                variants={fadeIn} 
+                variants={fadeUp} 
                 key={index} 
-                className="relative pl-8 md:pl-12 group"
+                className="flex flex-col md:flex-row gap-4 md:gap-8 group"
               >
-                {/* Timeline Dot */}
-                <div className="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-[#030014] border-2 border-purple-500 group-hover:bg-purple-500 group-hover:shadow-[0_0_15px_rgba(168,85,247,0.6)] transition-all duration-300"></div>
-                
-                <div className="flex flex-col md:flex-row md:items-center justify-between mb-2">
-                  <h3 className="text-xl md:text-2xl font-bold text-white group-hover:text-cyan-400 transition-colors">{exp.role}</h3>
-                  <span className="text-sm font-semibold text-gray-500 bg-white/5 px-3 py-1 rounded-full mt-2 md:mt-0 w-max">{exp.date}</span>
+                <div className="text-sm font-medium text-zinc-500 w-32 shrink-0 md:pt-1">{exp.date}</div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-bold text-zinc-200 group-hover:text-white transition-colors">{exp.role}</h3>
+                  <div className="text-sm text-zinc-400 mb-3">{exp.company}</div>
+                  <p className="text-zinc-500 text-sm leading-relaxed">{exp.points}</p>
                 </div>
-                
-                <h4 className="text-base font-medium text-purple-400 mb-4">{exp.company}</h4>
-                <p className="text-gray-400 leading-relaxed text-sm md:text-base">{exp.points}</p>
               </motion.div>
             ))}
           </div>
 
-          {/* Education Mini-Section */}
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeIn} className="mt-24">
-            <h3 className="text-2xl font-bold text-white mb-8 border-b border-white/10 pb-4">Education</h3>
-            <div className="grid md:grid-cols-2 gap-6">
-              {education.map((edu, index) => (
-                <div key={index} className="bg-white/5 border border-white/10 p-6 rounded-2xl hover:bg-white/10 transition-colors">
-                  <span className="text-xs font-bold text-cyan-500 mb-2 block">{edu.date}</span>
-                  <h4 className="text-lg font-bold text-white mb-1">{edu.degree}</h4>
-                  <p className="text-sm text-gray-400">{edu.school}</p>
-                </div>
-              ))}
-            </div>
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="mt-24 mb-12">
+            <h2 className="text-2xl font-bold text-zinc-100">Education</h2>
           </motion.div>
+
+          <div className="space-y-8">
+            {education.map((edu, index) => (
+              <motion.div 
+                initial="hidden" 
+                whileInView="visible" 
+                viewport={{ once: true }} 
+                variants={fadeUp} 
+                key={index} 
+                className="flex flex-col md:flex-row gap-4 md:gap-8 group"
+              >
+                <div className="text-sm font-medium text-zinc-500 w-32 shrink-0 md:pt-1">{edu.date}</div>
+                <div className="flex-1">
+                  <h3 className="text-base font-bold text-zinc-200">{edu.degree}</h3>
+                  <div className="text-sm text-zinc-400">{edu.school}</div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </section>
 
         {/* FOOTER & CONTACT */}
-        <footer id="contact" className="border-t border-white/10 mt-20 pt-20 pb-12 bg-white/[0.02]">
+        <footer id="contact" className="border-t border-zinc-800/50 mt-20 pt-20 pb-12 bg-zinc-900/10">
           <div className="max-w-4xl mx-auto px-6 text-center">
-            <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">Let&apos;s build together.</h2>
-            <p className="text-gray-400 text-lg mb-10 max-w-2xl mx-auto">
-              Ready to elevate your brand&apos;s digital presence and drive real revenue? Drop me a message and let&apos;s get started.
+            <h2 className="text-3xl md:text-5xl font-bold text-zinc-100 mb-6">Let&apos;s work together.</h2>
+            <p className="text-zinc-400 text-base md:text-lg mb-10 max-w-lg mx-auto">
+              Ready to elevate your brand&apos;s digital presence? Drop me an email to discuss your next project.
             </p>
             
-            <a href="mailto:nigunthanprignaselvam@gmail.com" className="inline-flex items-center gap-3 px-8 py-4 bg-white text-black rounded-full font-bold text-sm hover:scale-105 hover:bg-cyan-400 transition-all duration-300">
-              <Mail size={18} /> nigunthanprignaselvam@gmail.com
+            <a href="mailto:nigunthanprignaselvam@gmail.com" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-black rounded-full font-medium text-sm hover:bg-zinc-200 transition-colors">
+              <Mail size={16} /> nigunthanprignaselvam@gmail.com
             </a>
 
-            <div className="flex items-center justify-center gap-6 mt-16 pt-8 border-t border-white/10">
-              <Link href="https://www.linkedin.com/in/nigunthan/" target="_blank" className="text-gray-500 hover:text-[#0077b5] transition-colors"><LinkedinIcon size={24} /></Link>
-              <Link href="https://facebook.com/nigunthan" target="_blank" className="text-gray-500 hover:text-[#1877F2] transition-colors"><FacebookIcon size={24} /></Link>
-              <Link href="https://www.instagram.com/kaanth_97/" target="_blank" className="text-gray-500 hover:text-[#E1306C] transition-colors"><InstagramIcon size={24} /></Link>
-              <Link href="https://github.com/nigunthan" target="_blank" className="text-gray-500 hover:text-white transition-colors"><GithubIcon size={24} /></Link>
+            <div className="flex items-center justify-center gap-6 mt-16 pt-8 border-t border-zinc-800/50">
+              <Link href="https://www.linkedin.com/in/nigunthan/" target="_blank" className="text-zinc-500 hover:text-white transition-colors"><LinkedinIcon size={20} /></Link>
+              <Link href="https://facebook.com/nigunthan" target="_blank" className="text-zinc-500 hover:text-white transition-colors"><FacebookIcon size={20} /></Link>
+              <Link href="https://www.instagram.com/kaanth_97/" target="_blank" className="text-zinc-500 hover:text-white transition-colors"><InstagramIcon size={20} /></Link>
+              <Link href="https://github.com/nigunthan" target="_blank" className="text-zinc-500 hover:text-white transition-colors"><GithubIcon size={20} /></Link>
             </div>
             
-            <p className="text-gray-600 text-sm mt-8">
-              © {new Date().getFullYear()} Nigunthan Prignaselvam. Built with Next.js & Tailwind.
+            <p className="text-zinc-600 text-xs mt-8">
+              © {new Date().getFullYear()} Nigunthan Prignaselvam.
             </p>
           </div>
         </footer>

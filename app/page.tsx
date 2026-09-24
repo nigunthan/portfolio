@@ -90,7 +90,7 @@ export default function Portfolio() {
             <motion.h1 variants={fadeIn} className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6">
               Social Media Manager <br className="hidden md:block" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-600">
-                & Sales Consultant
+                & Senior Sales Consultant
               </span>
             </motion.h1>
 
@@ -126,7 +126,7 @@ export default function Portfolio() {
                 Turning digital interactions into living communities.
               </h3>
               <p className="text-gray-400 text-lg leading-relaxed">
-                With over 3 years of experience, I specialize in developing digital strategies that boost brand visibility, customer engagement, and revenue growth. Whether driving community growth or executing innovative sales strategies, I treat every campaign as an opportunity to deliver measurable results.
+                With over 3 years of experience in social media management, I specialize in developing digital strategies that boost brand visibility, customer engagement, and revenue growth. Whether driving community growth or executing innovative sales strategies, I treat every campaign as an opportunity to deliver measurable results.
               </p>
             </motion.div>
 
